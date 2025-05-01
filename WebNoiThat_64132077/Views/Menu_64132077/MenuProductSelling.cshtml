@@ -1,0 +1,132 @@
+﻿@model  List<WebNoiThat_64132077.Models.EF.ProductCategory>
+@{
+    var listTopProducts = (List<WebNoiThat_64132077.Models.EF.Product>)ViewBag.TopProductList;
+}
+@if (Model != null || Model.Any())
+{
+
+    <div class="container">
+        <div class="heading heading-center mb-5">
+            <h2 class="title">Sản phẩm Sell</h2><!-- End .title -->
+
+            <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="top-all-link" data-toggle="tab" href="#top-all-tab" role="tab" aria-controls="top-all-tab" aria-selected="true">All</a>
+                </li>
+                @foreach (var item in Model)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" id="@item.SeoTitle-link" data-toggle="tab" href="#@item.SeoTitle-tab" role="tab" aria-controls="@item.SeoTitle-tab" aria-selected="false">@item.Name</a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane p-0 fade show active" id="top-all-tab" role="tabpanel" aria-labelledby="top-all-link">
+                <div class="products">
+                    <div class="row justify-content-center">
+                        @foreach (var product in listTopProducts)
+                        {
+                            <!-- Product 1 -->
+                            var strImge = "";
+                            var img = product.ProductImages.FirstOrDefault(x => x.IsDefault);
+                            if (img != null)
+                            {
+                                strImge = img.Path;
+                            }
+                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                                <div class="product product-11 text-center">
+                                    <figure class="product-media">
+                                        @if (product.IsSale && product.PromotionPrice > 0)
+                                        {
+                                            <span class="product-label label-sale">Sale</span>
+                                        }
+
+                                        @if (product.CreateDate.HasValue && (DateTime.Now - product.CreateDate.Value).TotalDays <= 7)
+                                        {
+                                            <span class="product-label label-new">New</span>
+                                        }
+
+                                        @if (product.Hot != null && product.Hot > DateTime.Now)
+                                        {
+                                            <span class="product-label label-top">Hot</span>
+                                        }
+                                        <a href="/chi-tiet/@product.SeoTitle-p@(product.ID)">
+                                            <img src="@strImge" alt="@product.Name" class="product-image" style="height:220px">
+                                        </a>
+
+                                        <div class="product-action-vertical">
+                                            <a href="javascript:void(0)" class="btn-product-icon btn-wishlist"
+                                               onclick="addToWishlist(@product.ID)">
+                                                <span>add to wishlist</span>
+                                            </a>
+                                        </div><!-- End .product-action-vertical -->
+                                    </figure><!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="ratings-container">
+                                            @if (ViewBag.ProductRatings.ContainsKey(product.ID))
+                                            {
+                                                var rating = ViewBag.ProductRatings[product.ID];
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: @(rating.Item1 * 20)%"></div><!-- End .ratings-val -->
+                                                </div><!-- End .ratings -->
+                                                <span class="ratings-text">(@rating.Item2 Reviews)</span>
+                                            }
+                                        </div>
+                                        <div class="product-cat">
+                                            <a href="/danh-muc-san-phan/@product.ProductCategory.SeoTitle-@product.ProductCategory.ID">@product.ProductCategory.Name</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="/chi-tiet/@product.SeoTitle-p@(product.ID)">@product.Name</a></h3><!-- End .product-title -->
+                                        <div class="product-price">
+                                            @if (product.IsSale && product.PromotionPrice > 0)
+                                            {
+                                                <span class="new-price">@product.PromotionPrice đ</span>
+                                                <span class="old-price" style="text-decoration: line-through;">@product.Price đ</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@product.Price đ</span>
+                                            }
+                                        </div><!-- End .product-price -->
+                                    </div><!-- End .product-body -->
+                                    <div class="product-action">
+                                        @if (product.Quantity > 0)
+                                        {
+                                            <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@product.ID"><span>add to cart</span></a>
+                                        }
+                                        else
+                                        {
+                                            <span class="btn btn-outline-danger">Hết hàng</span>
+                                        }
+                                    </div><!-- End .product-action -->
+                                </div><!-- End .product -->
+                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                        }
+
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- .End .tab-pane -->
+
+            @foreach (var item in Model) // Model là danh sách danh mục
+            {
+                <div class="tab-pane p-0 fade" id="@item.SeoTitle-tab" role="tabpanel" aria-labelledby="@item.SeoTitle-link">
+                    <div class="products">
+                        <div class="row justify-content-center">
+                            @{Html.RenderAction("Partial_ItemByCateId", "Product_64132077", new { cateid = item.ID });}
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div><!-- End .tab-content -->
+
+        <div class="more-container text-center mt-4">
+            <a href="/san-pham" class="btn btn-outline-darker btn-more"><span>Xem nhiều hơn sản phẩm</span><i class="icon-long-arrow-down"></i></a>
+        </div><!-- End .more-container -->
+    </div>
+}
+@section scripts{
+    <script src="~/Scripts/WishList.js"></script>
+}

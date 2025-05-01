@@ -1,0 +1,218 @@
+﻿@{
+    ViewBag.Title = "Thống kê";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var statistics = ViewBag.Statistics as List<WebNoiThat_64132077.Models.Statistic>;
+}
+
+@section header{
+    <div class="content-header">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h3 class="m-0">Thống kê</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Home_64132077">Home</a></li>
+                    <li class="breadcrumb-item active">Thống kê</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+<section class="section">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Thống kê</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Tháng</th>
+                                <th>Tổng doanh thu</th>
+                                <th>Số lượng đơn hàng</th>
+                                @*<th>Lợi nhuận</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stat in statistics)
+                            {
+                                <tr>
+                                    <td>@stat.Month</td>
+                                    <td>@String.Format("{0:N0} đ", stat.Revenue)</td>
+                                    <td>@stat.OrderCount</td>
+                                    @*<td>@String.Format("{0:N0} đ", stat.Profit)</td>*@
+                                </tr>
+                            }
+                            <tr>
+                                <td><strong>Tổng năm</strong></td>
+                                <td><strong>@String.Format("{0:N0} đ", ViewBag.TotalAnnualRevenue)</strong></td>
+                                <td><strong>@ViewBag.TotalAnnualOrderCount</strong></td>
+                                @*<td><strong>@String.Format("{0:N0} đ", ViewBag.TotalAnnualProfit)</strong></td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <!-- Biểu đồ cột Revenue -->
+        <div class="col-md-6">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Biểu đồ cột Orders -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="ordersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3 ml-4">
+                <div class="col-12">
+                    <button id="exportReport" class="btn btn-success"><i class="fas fa-file-export"></i> Xuất Báo Cáo</button>
+                    <button id="printReport" class="btn btn-primary"><i class="fas fa-print"></i> In Báo Cáo</button>
+                </div>
+            </div>
+            <!-- Biểu đồ cột Profit -->
+            @*<div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas id="profitChart"></canvas>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</section>
+
+@section script {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Extract data for the charts
+        var months = @Html.Raw(Json.Encode(statistics.Select(s => "T " + s.Month).ToArray())); // Thêm "Tháng" vào trước số tháng
+        var revenues = @Html.Raw(Json.Encode(statistics.Select(s => s.Revenue).ToArray()));
+        var orders = @Html.Raw(Json.Encode(statistics.Select(s => s.OrderCount).ToArray()));
+        var profits = @Html.Raw(Json.Encode(statistics.Select(s => s.Profit).ToArray()));
+
+        // Revenue Chart
+        var ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        var revenueChart = new Chart(ctxRevenue, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Tổng doanh thu',
+                    data: revenues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Orders Chart
+        var ctxOrders = document.getElementById('ordersChart').getContext('2d');
+        var ordersChart = new Chart(ctxOrders, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Đơn hàng',
+                    data: orders,
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Profit Chart
+        //var ctxProfit = document.getElementById('profitChart').getContext('2d');
+        //var profitChart = new Chart(ctxProfit, {
+        //    type: 'bar',
+        //    data: {
+        //        labels: months,
+        //        datasets: [{
+        //            label: 'Lợi nhuận',
+        //            data: profits,
+        //            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        //            borderColor: 'rgba(75, 192, 192, 1)',
+        //            borderWidth: 1
+        //        }]
+        //    },
+        //    options: {
+        //        responsive: true,
+        //        scales: {
+        //            y: {
+        //                beginAtZero: true
+        //            }
+        //        }
+        //    }
+        //});
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('printReport').addEventListener('click', function () {
+            var printContents = document.querySelector('.card-body').innerHTML; // Lấy nội dung bảng thống kê
+            var originalContents = document.body.innerHTML;
+
+            // Tạm thời thay thế nội dung body bằng nội dung cần in
+            document.body.innerHTML = `
+                                                                                                    <html>
+                                                                                                        <head>
+                                                                                                            <title>Báo Cáo Thống Kê</title>
+                                                                                                            <style>
+                                                                                                                table {
+                                                                                                                    width: 100%;
+                                                                                                                    border-collapse: collapse;
+                                                                                                                }
+                                                                                                                table, th, td {
+                                                                                                                    border: 1px solid black;
+                                                                                                                    text-align: center;
+                                                                                                                    padding: 8px;
+                                                                                                                }
+                                                                                                                th {
+                                                                                                                    background-color: #f2f2f2;
+                                                                                                                }
+                                                                                                            </style>
+                                                                                                        </head>
+                                                                                                        <body>
+                                                                                                            <h1>Báo Cáo Thống Kê</h1>
+                                                                                                            ${printContents}
+                                                                                                        </body>
+                                                                                                    </html>
+                                                                                                `;
+
+            window.print();
+            // Khôi phục nội dung body
+            location.reload();
+        });
+    </script>
+}

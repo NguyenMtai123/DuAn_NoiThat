@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Web Bán Hàng Nội Thất Online</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/Assets/client/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Assets/client/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Assets/client/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/Assets/client/images/icons/site.html">
+    <link rel="mask-icon" href="/Assets/client/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/Assets/client/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/Assets/client/images/icons/browserconfig.xml">
+    <link rel="stylesheet" href="/Assets/client/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/Assets/client/css/plugins/jquery.countdown.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/Assets/client/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Assets/client/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/Assets/client/css/plugins/magnific-popup/magnific-popup.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/Assets/client/css/style.css">
+    <link rel="stylesheet" href="/Assets/client/css/text.css">
+    @RenderSection("Styles", required: false)
+
+    <!-- Main CSS File -->
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-2 header-intro-clearance">
+            <div class="header-top">
+                @{Html.RenderAction("MenuTop", "Menu_64132077"); }
+            </div><!-- End .header-top -->
+            <div class="header-middle">
+                @RenderPage("MenuMiddle.cshtml")
+            </div><!-- End .header-middle -->
+            <div class="header-bottom sticky-header">
+                <div class="container bg-light">
+                    <div class="header-left">
+                        @{Html.RenderAction("ProductCategory", "Menu_64132077"); }
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        @{Html.RenderAction("MainMenu", "Menu_64132077"); }
+                    </div><!-- End .header-center -->
+
+                    <div class="header-right">
+                        <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+                    </div>
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+        </header><!-- End .header -->
+
+        <main class="main">
+            @RenderBody()
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2">
+            @RenderPage("_Footer.cshtml")
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        @{Html.RenderAction("MobileMenu", "Menu_64132077"); }
+    </div><!-- End .mobile-menu-container -->
+    <!-- Plugins JS File -->
+    <script src="/Assets/client/js/jquery.min.js"></script>
+    <script src="/Assets/client/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jsShopping.js"></script>
+    <script src="/Assets/client/js/jquery.hoverIntent.min.js"></script>
+    <script src="/Assets/client/js/jquery.waypoints.min.js"></script>
+    <script src="/Assets/client/js/superfish.min.js"></script>
+    <script src="/Assets/client/js/owl.carousel.min.js"></script>
+    <script src="/Assets/client/js/jquery.magnific-popup.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/Assets/client/js/main.js"></script>
+    <script src="/Assets/client/js/bootstrap-input-spinner.js"></script>
+    <script src="/Assets/client/js/jquery.plugin.min.js"></script>
+    <script src="/Assets/client/js/jquery.countdown.min.js"></script>
+
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @RenderSection("scripts", required: false);
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = null;
+}
+@model WebNoiThat_64132077.Areas.Admin.Models.LoginModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Otika - Admin Dashboard Template</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="/Assets/admin/css/app.min.css">
+    <link rel="stylesheet" href="/Assets/admin/bundles/bootstrap-social/bootstrap-social.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/Assets/admin/css/style.css">
+    <link rel="stylesheet" href="/Assets/admin/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="/Assets/admin/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='/Assets/admin/img/favicon.ico' />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    @if (TempData["AlertMessage"] != null)
+                    {
+                        <div id="AlertBox" class="alert @TempData["AlertType"] hide">
+                            @TempData["AlertMessage"]
+                        </div>
+                    }
+                    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                        <div class="d-flex justify-content-center py-3">
+                            <a href="index.html" class="logo d-flex align-items-center w-auto nav-link">
+                                <img src="/Assets/admin/img/logo.png" alt="">
+                                <span class="d-none d-lg-block">NiceAdmin</span>
+                            </a>
+                        </div><!-- End Logo -->
+                        <div class="card card-primary">
+                            <div class="card-body">
+                                @using (Html.BeginForm("Login", "Login_64132077", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4">Đăng nhập</h5>
+                                        <p class="text-center small">Nhập tài khoản và mật khẩu để đăng nhập</p>
+                                    </div>
+                                    @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+                                    <div class="form-group">
+                                        <label for="email">Tài khoản</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text" id="inputGroupPrepend">@@</span>
+                                            @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @required = "required", @placeholder = "Username", @autofocus = "autofocus" })
+                                            <div class="invalid-feedback">Vui lòng nhập tài khoản.</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-block">
+                                            <label for="password" class="control-label">Mật khẩu</label>
+                                            @*<div class="float-right">
+                                                    <a style="text-decoration:none" href="auth-forgot-password.html" class="text-small">
+                                                        Forgot Password?
+                                                    </a>
+                                                </div>*@
+                                        </div>
+                                        @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @required = "required", @placeholder = "Password", type = "password" })
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập mật khẩu
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            @Html.CheckBoxFor(model => model.RememberMe, new { @class = "custom-control-input", @id = "remember-me" })
+                                            <label class="custom-control-label" for="remember-me">Ghi nhớ đăng nhập</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                            Login
+                                        </button>
+                                    </div>
+                                    @*<div class="mt-1 text-muted text-center">
+                                            Don't have an account? <a href="auth-register.html">Create One</a>
+                                        </div>*@
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="/Assets/admin/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <!-- Template JS File -->
+    <script src="/Assets/admin/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="/Assets/admin/js/custom.js"></script>
+    <script src="~/Assets/admin/js/admin.js"></script>
+</body>
+</html>
+

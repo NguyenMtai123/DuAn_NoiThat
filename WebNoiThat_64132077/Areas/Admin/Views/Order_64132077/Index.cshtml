@@ -1,0 +1,334 @@
+﻿@model PagedList.IPagedList<WebNoiThat_64132077.Models.EF.Order>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    <div class="content-header">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h3 class="m-0">Quản lý đơn hàng</h3>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/Home_64132077">Home</a></li>
+                    <li class="breadcrumb-item active">Đơn hàng</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+}
+<section class="section">
+    <div class="section-body">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Danh sách đơn hàng</h4>
+                        <div class="card-header-form mr-2">
+                            @using (Html.BeginForm("Index", "Order_64132077", FormMethod.Get))
+                            {
+                                <div class="input-group">
+                                    @Html.TextBox("searchString", ViewBag.SearchString as string, new { @class = "form-control", placeholder = "Nhập mã đơn hàng..." })
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-body p-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Tên Khách hàng</th>
+                                    <th>Tiền</th>
+                                    <th>Phương thức</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày đặt hàng</th>
+                                    <th>Action</th>
+                                </tr>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var index = (Model.PageNumber - 1) * Model.PageSize;
+                                    foreach (var item in Model)
+                                    {
+                                        index++;
+                                        <tr id="row-@item.ID">
+                                            <td>@index</td>
+                                            <td>@item.Code</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.TotalAmount</td>
+                                            <td>@(item.TypePayment==1?"COD":"Chuyển khoản")</td>
+                                            <td>@(item.OrderDate.HasValue ? item.OrderDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                                            <td>
+                                                @if (item.Status == 1)
+                                                {
+                                                    <span>Đang xử lý</span>
+                                                }
+                                                @if (item.Status == 2)
+                                                {
+                                                    <span>Đang giao hàng</span>
+                                                }
+                                                @if (item.Status == 3)
+                                                {
+                                                    <span>Hoàn thành</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    @Html.ActionLink("Xem", "view", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mr-2" })
+                                                    <a href="#" class="btn btn-sm btn-success btnCapNhat mr-1" data-id="@item.ID">Cập nhật</a>
+                                                    <button class="btn btn-danger btn-sm btnXoa" data-id="@item.ID">
+                                                        Xóa
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" class="text-center">Không có bản ghi nào</td>
+                                    </tr>
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <nav class="d-inline-block">
+                            <ul class="pagination mb-0">
+                                <!-- Nút về đầu -->
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = 1, searchString = ViewBag.SearchString })">
+                                            <i class="fas fa-angle-double-left"></i> <!-- Icon về đầu -->
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Nút trang trước -->
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, searchString = ViewBag.SearchString })">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Tính toán các trang cần hiển thị -->
+                                @{
+                                    int startPage = Math.Max(1, Model.PageNumber - 1);
+                                    int endPage = Math.Min(Model.PageCount, Model.PageNumber + 1);
+
+                                    if (Model.PageNumber == 1)
+                                    {
+                                        endPage = Math.Min(3, Model.PageCount);
+                                    }
+                                    if (Model.PageNumber == Model.PageCount)
+                                    {
+                                        startPage = Math.Max(1, Model.PageCount - 2);
+                                    }
+                                }
+
+                                @for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = i, searchString = ViewBag.SearchString })">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Nút trang sau -->
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, searchString = ViewBag.SearchString })">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Nút đến cuối -->
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, searchString = ViewBag.SearchString })">
+                                            <i class="fas fa-angle-double-right"></i> <!-- Icon đến cuối -->
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật trạng thái</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtOrderId" value="0" />
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control" id="ddTrangThai">
+                        <option value="" selected>
+                            -- Trạng thái --
+                        </option>
+                        <option value="1">
+                            Đang xử lý
+                        </option>
+                        <option value="2">
+                            Đang giao hàng
+                        </option>
+                        <option value="3">
+                            Hoàn thành
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btnLuu">Lưu</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@section script{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btnCapNhat', function () {
+                var id = $(this).data("id");
+                $('#txtOrderId').val(id);
+                $('#modal-default').modal('show');
+            });
+
+            $('body').on('click', '#btnLuu', function () {
+                var id = $('#txtOrderId').val();
+                var tt = $('#ddTrangThai').val();
+                $.ajax({
+                    url: '/admin/order_64132077/UpdateTT',
+                    type: 'POST',
+                    data: { id: id, trangthai: tt },
+                    success: function (res) {
+                        if (res.Success) {
+                            Swal.fire(
+                                'Thành công!',
+                                res.message,
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'Lỗi!',
+                                res.message,
+                                'error'
+                            );
+                        }
+                    }
+                });
+            });
+
+        });
+        $(document).ready(function () {
+            // Xử lý xóa đơn hàng
+            $('body').on('click', '.btnXoa', function () {
+                var id = $(this).data("id");
+
+                // Sử dụng SweetAlert để xác nhận xóa
+                Swal.fire({
+                    title: 'Bạn có chắc?',
+                    text: "Bạn sẽ không thể phục hồi đơn hàng này!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có, xóa nó!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Thực hiện xóa nếu người dùng đồng ý
+                        $.ajax({
+                            url: '/admin/order_64132077/Delete',
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (res) {
+                                if (res.Success) {
+                                    Swal.fire(
+                                        'Đã xóa!',
+                                        res.Message,
+                                        'success'
+                                    ).then(() => {
+                                        location.reload(); // Tải lại trang sau khi xóa thành công
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Lỗi!',
+                                        res.Message,
+                                        'error'
+                                    );
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>@ViewBag.Title - Admin Dashboard Template</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="/Assets/admin/css/app.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/Assets/admin/css/style.css">
+    <link rel="stylesheet" href="/Assets/admin/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="/Assets/admin/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='/Assets/admin/img/favicon.ico' />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+</head>
+
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            @RenderPage("_NavbarMenu.cshtml")
+            @RenderPage("_LeftMenu.cshtml")
+            <!-- Main Content -->
+            <div class="main-content">
+                @RenderSection("header", required: true)
+                @if (TempData["AlertMessage"] != null)
+                {
+                    <div id="AlertBox" class="alert @TempData["AlertType"] hide">
+                        @TempData["AlertMessage"]
+                    </div>
+                }
+                @RenderBody()
+                @RenderPage("_SildeSetting.cshtml")
+            </div>
+            <footer class="main-footer">
+                <div class="footer-left">
+                    <a href="templateshub.net">Templateshub</a></a>
+                </div>
+                <div class="footer-right">
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="/Assets/admin/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="/Assets/admin/bundles/apexcharts/apexcharts.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="/Assets/admin/js/page/index.js"></script>
+    <!-- Template JS File -->
+    <script src="/Assets/admin/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="/Assets/admin/js/custom.js"></script>
+    <script src="~/Assets/admin/js/admin.js"></script>
+    <script src="~/Assets/admin/Plugin/ckfinder/ckfinder.js"></script>
+    <script src="~/Assets/admin/Plugin/ckeditor/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @RenderSection("script", required: false)
+</body>
+</html>

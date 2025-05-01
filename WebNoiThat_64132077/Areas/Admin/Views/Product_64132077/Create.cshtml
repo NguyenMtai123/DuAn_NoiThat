@@ -1,0 +1,385 @@
+﻿@model WebNoiThat_64132077.Models.EF.Product
+
+@{
+    ViewBag.Title = "Thêm mới sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    <div class="content-header">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h3 class="m-0">Thêm mới sản phẩm</h3>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/Home_64132077">Home</a></li>
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/PostCategory_64132077">Sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+}
+@section Styles{
+    <style>
+        .nav-pills .nav-link {
+            margin-right: 5px !important; /* Giảm khoảng cách giữa các tab */
+            padding: 5px 10px !important; /* Giảm padding trong tab */
+        }
+
+        textarea.form-control-5 {
+            display: block;
+            width: 100%;
+            height: auto;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fdfdff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            box-shadow: inset 0 0 0 transparent;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+            input.form-control:focus,
+            textarea.form-control-5:focus,
+            select.form-control-5:focus {
+                border-color: #6777EF;
+                outline: none;
+            }
+    </style>
+}
+<section class="section">
+    <div class="section-body">
+        <div class="card">
+            @using (Html.BeginForm("Create", "Product_64132077", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="card-header">
+                    <h4>Thông tin sản phẩm</h4>
+                </div>
+                <div class="ml-4 px-3">
+                    <ul class="nav nav-pills border-bottom-1">
+                        <li class="nav-item"><a class="nav-link active mr-2" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                        <li class="nav-item"><a class="nav-link mr-2" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
+                    </ul>
+                </div><!-- /.card-header -->
+                <div class="card-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="tab-content">
+                        <div class="active tab-pane" id="activity">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.SeoTitle, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.SeoTitle, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.SeoTitle, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CategoryID, "Danh mục", htmlAttributes: new { @class = "control-label col-md-6" })
+                                        <div class="col-md-12">
+                                            @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.Categories, "Chọn danh mục", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.SupplierID, "Nhà cung cấp", htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.DropDownListFor(model => model.SupplierID, (SelectList)ViewBag.Suppliers, "Chọn nhà cung cấp", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Hot, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.Hot, new { @class = "form-control", type = "datetime-local" })
+                                            @Html.ValidationMessageFor(model => model.Hot, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Warranty, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.Warranty, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Warranty, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PromotionPrice, htmlAttributes: new { @class = "control-label col-md-12" })
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(model => model.PromotionPrice, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.PromotionPrice, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            <div class="checkbox">
+                                                @Html.CheckBoxFor(model => model.Status)
+                                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.VAT, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            <div class="checkbox">
+                                                @Html.CheckBoxFor(model => model.VAT)
+                                                @Html.ValidationMessageFor(model => model.VAT, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.IsSale, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <div class="col-md-12">
+                                            <div class="checkbox">
+                                                @Html.CheckBoxFor(model => model.IsSale)
+                                                @Html.ValidationMessageFor(model => model.IsSale, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control-5", @rows = 3 })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Detail, new { @class = "form-control", id = "txtContent" })
+                                    @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="timeline">
+                            <div class="row">
+                                <div class="col-md-12 text-right pb-3">
+                                    <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-hover" id="tbAnhSanPham">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Ảnh</th>
+                                                <th class="text-center">Ảnh đại diện</th>
+                                                <th class="text-center">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbHtml">
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" id="tCurrentId" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <div class="tab-pane" id="settings">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-8" })
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(model => model.MetaKeywords, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MetaDescription, htmlAttributes: new { @class = "control-label col-md-6" })
+                                    <div class="col-md-12">
+                                        @Html.TextAreaFor(model => model.MetaDescription, new { @class = "form-control-5", @rows = 3 })
+                                        @Html.ValidationMessageFor(model => model.MetaDescription, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-12 d-flex">
+                                <input type="submit" value="Create" class="btn btn-outline-primary mr-4" />
+                                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-outline-dark" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+@section script{
+    <script src="~/Scripts/jsConvert.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtContent', {
+                customConfig: '/Assets/admin/Plugin/ckeditor/config.js',
+                allowedContent: true,
+
+            });
+
+            $('body').on('click', '.btnXoaAnh', function () {
+                var conf = confirm('Bạn có muốn xóa ảnh này không?');
+                if (conf === true) {
+                    var _id = $(this).data('id');
+                    $('#trow_' + _id).fadeTo('fast', 0.5, function () {
+                        $(this).slideUp('fast', function () { $(this).remove(); });
+                    });
+                    var temp = $('#tCurrentId').val();
+                    var currentId = parseInt(temp) - 1;
+                    $('#tCurrentId').val(currentId);
+                }
+            });
+        });
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                addImageProduct(fileUrl);
+            };
+            finder.popup();
+        }
+        function addImageProduct(url) {
+            var temp = $('#tCurrentId').val();
+            var currentId = parseInt(temp) + 1;
+            var str = "";
+            if (currentId == 1) {
+                str += `<tr id="trow_${currentId}" style="margin-bottom: 10px;">
+                                                        <td class="text-center">${currentId}</td>
+                                                        <td class="text-center">
+                                                            <img width="80" style="height:80px; margin: 5px;" src="${url}" />
+                                                            <input type='hidden' value="${url}" name="Images"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="radio" name="rDefault" value="${currentId}" checked="checked"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
+                                                        </td>
+                                                    </tr>`;
+            } else {
+                str += `<tr id="trow_${currentId}" style="margin-bottom: 10px;">
+                                                        <td class="text-center">${currentId}</td>
+                                                        <td class="text-center">
+                                                            <img width="80" style="height:80px; margin: 5px;" src="${url}" />
+                                                            <input type='hidden' value="${url}" name="Images"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="radio" name="rDefault" value="${currentId}"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
+                                                        </td>
+                                                    </tr>`;
+            }
+            $('#tbHtml').append(str);
+            $('#tCurrentId').val(currentId);
+        }
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isSaleCheckbox = document.querySelector("#IsSale");
+            const priceInput = document.querySelector("#PromotionPrice");
+
+            isSaleCheckbox.addEventListener("change", function () {
+                if (this.checked && (!priceInput.value || parseFloat(priceInput.value) <= 0)) {
+                    alert("Vui lòng điền giá trước khi chọn IsSale.");
+                    this.checked = false; // Hủy tích chọn
+                }
+            });
+
+            priceInput.addEventListener("input", function () {
+                const priceValue = parseFloat(this.value);
+                if (priceValue > 0) {
+                    isSaleCheckbox.disabled = false; // Bật checkbox nếu giá hợp lệ
+                } else {
+                    isSaleCheckbox.checked = false; // Hủy tích chọn nếu giá không hợp lệ
+                    isSaleCheckbox.disabled = true; // Vô hiệu hóa checkbox
+                }
+            });
+
+            // Kiểm tra ban đầu khi tải trang
+            if (!priceInput.value || parseFloat(priceInput.value) <= 0) {
+                isSaleCheckbox.disabled = true;
+            }
+        });
+    </script>
+}

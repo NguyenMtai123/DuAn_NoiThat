@@ -1,0 +1,147 @@
+﻿@model PagedList.IPagedList<WebNoiThat_64132077.Models.EF.Product>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Kết quả tìm kiếm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var keyword = ViewBag.Keyword as string;
+}
+@section Styles {
+    <link rel="stylesheet" href="/Assets/client/css/plugins/nouislider/nouislider.css">
+    <style>
+        .custom-control-label.active {
+            color: red;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            margin-top: 10px; /* Khoảng cách phía trên nút */
+        }
+    </style>
+}
+
+<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+    <div class="container">
+        <h1 class="page-title">Kết quả tìm kiếm<span>Shop</span></h1>
+        <p>Kết quả tìm kiếm cho: "<strong>@keyword</strong>"</p>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+
+<div class="page-content">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="products mb-3">
+                        <div class="row justify-content-center">
+                            @foreach (var item in Model)
+                            {
+                                var strImage = item.ProductImages?.FirstOrDefault(x => x.IsDefault)?.Path ?? "/assets/images/default-product.jpg";
+                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                    <div class="product product-7 text-center">
+                                        <figure class="product-media">
+                                            @if (item.IsSale && item.PromotionPrice > 0)
+                                            {
+                                                <span class="product-label label-sale">Sale</span>
+                                            }
+
+                                            @if (item.CreateDate.HasValue && (DateTime.Now - item.CreateDate.Value).TotalDays <= 7)
+                                            {
+                                                <span class="product-label label-new">New</span>
+                                            }
+
+                                            <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">
+                                                <img src="@strImage" alt="@item.Name" class="product-image" style="height:220px">
+                                            </a>
+                                            <div class="product-action">
+                                                @if (item.Quantity > 0)
+                                                {
+                                                    <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@item.ID"><span>add to cart</span></a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="btn-product">Hết hàng</span>
+                                                }
+                                            </div><!-- End .product-action -->
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <h3 class="product-title">
+                                                <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">@item.Name</a>
+                                            </h3>
+                                            <div class="product-price">
+                                                @if (item.IsSale && item.PromotionPrice > 0)
+                                                {
+                                                    <span class="new-price">@String.Format("{0:N0} đ", item.PromotionPrice)</span>
+                                                    <span class="old-price" style="text-decoration: line-through;">@String.Format("{0:N0} đ", item.Price)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@String.Format("{0:N0} đ", item.Price)</span>
+                                                }
+                                            </div><!-- End .product-price -->
+                                            <div class="ratings-container">
+                                                @{
+                                                    WebNoiThat_64132077.Models.EF.WebNoiThat_64132077DbContext db = new WebNoiThat_64132077.Models.EF.WebNoiThat_64132077DbContext();
+                                                    var reviews = db.Reviews.Where(r => r.ProductID == item.ID).ToList();
+                                                    var averageRating = reviews.Any() ? reviews.Average(r => r.Rate) : 0;
+                                                    var totalReviews = reviews.Count;
+                                                }
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: @(averageRating * 20)%;"> </div> <!-- Tỷ lệ % tương ứng với số sao -->
+                                                </div>
+                                                <span class="ratings-text">(@totalReviews Reviews)</span>
+                                            </div><!-- End .rating-container -->
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                            }
+                        </div><!-- End .row -->
+                    </div><!-- End .products -->
+                }
+                else
+                {
+                    <div class="alert alert-warning text-center">
+                        Không tìm thấy sản phẩm nào khớp với từ khóa "<strong>@keyword</strong>".
+                    </div>
+                }
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Search", new { keyword = keyword, page = Model.PageNumber - 1 })" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                                </a>
+                            </li>
+                        }
+                        @foreach (var page in Enumerable.Range(1, Model.PageCount))
+                        {
+                            <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Search", new { keyword = keyword, page = page })">@page</a>
+                            </li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Search", new { keyword = keyword, page = Model.PageNumber + 1 })" aria-label="Next">
+                                    Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div><!-- End .col-lg-12 -->
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
+
+@section Scripts {
+    <script src="/Assets/client/js/wNumb.js"></script>
+    <script src="/Assets/client/js/nouislider.min.js"></script>
+}

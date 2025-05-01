@@ -1,0 +1,81 @@
+﻿@model WebNoiThat_64132077.Models.LoginAccount
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    if (TempData["Message"] != null)
+    {
+        <div class="container">
+            <div class="alert alert-warning">
+                @TempData["Message"]
+            </div>
+        </div>
+
+    }
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Login", "User_64132077", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-container">
+                    <h4 class="form-title">Đăng nhập</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(model => model.Password, new { @class = "form-control", type = "password" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex align-content-center">
+                        <div class="checkbox mr-3">
+                            @Html.CheckBoxFor(model => model.RememberMe, new { @class = "form-check-input", @id = "remember-me" })
+                        </div>
+                        <label for="remember-me" class="form-check-label">Ghi nhớ đăng nhập</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+                            <input type="submit" value="Đăng nhập" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <p>Chưa có tài khoản? <a href="/dang-ky">Đăng ký ngay</a></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        // Tự động ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            var alertElement = document.querySelector(".alert");
+            if (alertElement) {
+                alertElement.style.transition = "opacity 0.5s ease";
+                alertElement.style.opacity = 0;
+                setTimeout(function () {
+                    alertElement.style.display = "none";
+                }, 500); // Chờ hiệu ứng fade-out hoàn tất
+            }
+        }, 3000); // 5 giây
+    </script>
+
+}

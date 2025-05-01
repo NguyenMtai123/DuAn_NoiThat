@@ -1,0 +1,13 @@
+﻿@model List<WebNoiThat_64132077.Models.EF.Menu>
+
+<nav class="main-nav">
+    <ul class="menu">
+        @foreach (var item in Model)
+        {
+            <li class="megamenu-container">
+                <a href="@item.Link" target="@item.Target" class="">@item.Name</a>
+            </li>
+        }
+
+    </ul><!-- End .menu -->
+</nav><!-- End .main-nav -->

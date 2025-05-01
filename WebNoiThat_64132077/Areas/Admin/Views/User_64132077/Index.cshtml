@@ -1,0 +1,271 @@
+﻿@model PagedList.IPagedList<WebNoiThat_64132077.Models.EF.User>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách User";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    <div class="content-header">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h3 class="m-0">Quản lý người dùng</h3>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/Home_64132077">Home</a></li>
+                    <li class="breadcrumb-item active">User</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+}
+@section Styles {
+    <style>
+        th a, th a:visited {
+            color: #000; /* Màu xanh giống như liên kết mặc định */
+            text-decoration: none; /* Loại bỏ gạch chân */
+            font-weight: bold;
+        }
+
+            th a:hover {
+                color: #000; /* Màu khi hover */
+                text-decoration: none; /* Gạch chân khi hover */
+                font-weight: bold;
+            }
+
+        th {
+            cursor: pointer; /* Thêm con trỏ kiểu pointer để trông như một liên kết */
+        }
+    </style>
+}
+<section class="section">
+    <div class="section-body">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Danh sách người dùng</h4>
+                        <div class="card-header-form">
+                            @using (Html.BeginForm("Index", "User_64132077", FormMethod.Get, new { @class = "form-control-lg" }))
+                            {
+                                <div class="input-group">
+                                    @Html.TextBox("searchString", ViewBag.SearchString as string, new { @class = "form-control", placeholder = "Nhập tài khoản hoặc email..." })
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="">
+                            <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+                            @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-outline-primary" })
+                        </div>
+                    </div>
+
+                    <div class="card-body p-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th class="text-center">
+                                        <div class="custom-checkbox custom-checkbox-table custom-control">
+                                            <input type="checkbox" class="custom-control-input" id="SelectAll" />
+                                            <label for="SelectAll" class="custom-control-label">&nbsp;</label>
+                                        </div>
+                                    </th>
+                                    <th>#</th>
+                                    <th>Avatar</th>
+                                    <th>
+                                        @Html.ActionLink("Tài khoản", "Index", new { sortBy = "Username", sortOrder = ViewBag.UsernameSortOrder ?? "asc", page = ViewBag.PageNumber })
+                                        <i class="fas @(ViewBag.SortBy == "Username" && ViewBag.SortOrder == "asc" ? "fa-sort-up" : (ViewBag.SortBy == "Username" && ViewBag.SortOrder == "desc" ? "fa-sort-down" : "fa-sort"))"></i>
+                                    </th>
+                                    <th>Vai trò</th>
+                                    <th>
+                                        @Html.ActionLink("Email", "Index", new { sortBy = "Email", sortOrder = ViewBag.EmailSortOrder ?? "asc", page = ViewBag.PageNumber })
+                                        <i class="fas @(ViewBag.SortBy == "Email" && ViewBag.SortOrder == "asc" ? "fa-sort-up" : (ViewBag.SortBy == "Email" && ViewBag.SortOrder == "desc" ? "fa-sort-down" : "fa-sort"))"></i>
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Ngày tạo", "Index", new { sortBy = "CreateDate", sortOrder = ViewBag.CreateDateSortOrder ?? "asc", page = ViewBag.PageNumber })
+                                        <i class="fas @(ViewBag.SortBy == "CreateDate" && ViewBag.SortOrder == "asc" ? "fa-sort-up" : (ViewBag.SortBy == "CreateDate" && ViewBag.SortOrder == "desc" ? "fa-sort-down" : "fa-sort"))"></i>
+                                    </th>
+
+                                    <th>Trạng thái</th>
+                                    <th>Action</th>
+                                </tr>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var index = (Model.PageNumber - 1) * Model.PageSize; // Tính chỉ số bắt đầu theo trang
+                                    foreach (var item in Model)
+                                    {
+                                        index++;
+                                        <tr id="row-@item.ID">
+                                            <td class="p-0 text-center">
+                                                <div class="custom-checkbox custom-control">
+                                                    <input type="checkbox" id="checkbox-@index" class="custom-control-input cbkItem" value="@item.ID" />
+                                                    <label for="checkbox-@index" class="custom-control-label">&nbsp;</label>
+                                                </div>
+                                            </td>
+                                            <td>@index</td>
+                                            <td>
+                                                <img alt="image" src="@item.Image" class="rounded-circle" width="35"
+                                                     data-toggle="tooltip" title="Wildan Ahdian">
+                                            </td>
+                                            <td>@item.Username</td>
+                                            <td>@(item.UserGroup.Name != null ? item.UserGroup.Name : "Không có danh mục")</td>
+                                            <td>@item.Email</td>
+                                            <td>@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                                            <td>
+                                                <a href="#" class="badge @(item.Status ? "badge-success" : "badge-danger") btn-active" data-id="@item.ID">
+                                                    @(item.Status ? "Active" : "Blocked")
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <div class="d-flex">
+                                                    @Html.ActionLink("Xem", "Details", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mr-2" })
+                                                    @Html.ActionLink("Sửa", "Edit", new { id = item.ID }, new { @class = "btn btn-warning btn-sm mr-2" })
+                                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@item.ID">
+                                                        Xóa
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" class="text-center">Không có bản ghi nào</td>
+                                    </tr>
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <nav class="d-inline-block">
+                            <ul class="pagination mb-0">
+                                <!-- Nút về đầu -->
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = 1, searchString = ViewBag.SearchString,sortBy = ViewBag.SortBy, sortOrder = ViewBag.SortOrder })">
+                                            <i class="fas fa-angle-double-left"></i> <!-- Icon về đầu -->
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Nút trang trước -->
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, searchString = ViewBag.SearchString, sortBy = ViewBag.SortBy, sortOrder = ViewBag.SortOrder })">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Tính toán các trang cần hiển thị -->
+                                @{
+                                    int startPage = Math.Max(1, Model.PageNumber - 1);
+                                    int endPage = Math.Min(Model.PageCount, Model.PageNumber + 1);
+
+                                    if (Model.PageNumber == 1)
+                                    {
+                                        endPage = Math.Min(3, Model.PageCount);
+                                    }
+                                    if (Model.PageNumber == Model.PageCount)
+                                    {
+                                        startPage = Math.Max(1, Model.PageCount - 2);
+                                    }
+                                }
+
+                                @for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = i, searchString = ViewBag.SearchString,sortBy = ViewBag.SortBy, sortOrder = ViewBag.SortOrder })">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Nút trang sau -->
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, searchString = ViewBag.SearchString, sortBy = ViewBag.SortBy, sortOrder = ViewBag.SortOrder })">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Nút đến cuối -->
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, searchString = ViewBag.SearchString, sortBy = ViewBag.SortBy, sortOrder = ViewBag.SortOrder })">
+                                            <i class="fas fa-angle-double-right"></i> <!-- Icon đến cuối -->
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+
+                    @*<div class="card-footer text-right">
+                            <nav class="d-inline-block">
+                                @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }),
+                                new PagedListRenderOptions
+                                {
+                                    MaximumPageNumbersToDisplay = 3,
+                                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+
+                                })
+
+                            </nav>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section script{
+    <script src="~/Assets/admin/js/controller/adminjs/useradmin.js"></script>
+}
