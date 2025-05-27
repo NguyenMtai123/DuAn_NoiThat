@@ -1,0 +1,75 @@
+﻿@section Styles{
+    @*<link href="~/Content/jquery-ui.css" rel="stylesheet" />*@
+}
+<div class="container">
+    <div class="header-left">
+        <button class="mobile-menu-toggler">
+            <span class="sr-only">menu</span>
+            <i class="icon-bars"></i>
+        </button>
+
+        <a href="index.html" class="logo">
+            <img src="~/assets/client/images/logo.png" alt="Molla Logo" width="105" height="25">
+        </a>
+    </div><!-- End .header-left -->
+
+    <div class="header-center">
+        <div class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
+            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+            <form action="/tim-kiem" method="get">
+                <div class="header-search-wrapper search-wrapper-wide">
+                    <label class="sr-only">Search</label>
+                    <input type="search" class="form-control" name="keyword" id="txtKeyword" placeholder="Tìm kiếm sản phẩm ..." required>
+                    <button id="txtSearch" class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                </div><!-- End .header-search-wrapper -->
+            </form>
+        </div><!-- End .header-search -->
+    </div>
+
+    <div class="header-right">
+        <div class="account">
+            <a href="/tai-khoan" title="My account">
+                <div class="icon">
+                    <i class="icon-user"></i>
+                </div>
+                <p>Tài khoản</p>
+            </a>
+        </div><!-- End .compare-dropdown -->
+
+        @{
+            WebNoiThat_64132077.Models.EF.WebNoiThat_64132077DbContext db = new WebNoiThat_64132077.Models.EF.WebNoiThat_64132077DbContext();
+            var userSession = Session[WebNoiThat_64132077.Common.CommonConstants.USER_SESSION] as WebNoiThat_64132077.Common.UserLogin;
+            var wishlistCount = 0;
+            if (userSession != null)
+            {
+                wishlistCount = db.Wishlists.Count(w => w.Username == userSession.UserName);
+            }
+        }
+
+        <div class="wishlist">
+            <a href="/yeu-thich" title="Wishlist">
+                <div class="icon">
+                    <i class="icon-heart-o"></i>
+                    <span class="wishlist-count badge">@wishlistCount</span> <!-- Hiển thị số lượng -->
+                </div>
+                <p>Yêu thích</p>
+            </a>
+        </div><!-- End .wishlist -->
+
+
+        <div class="dropdown cart-dropdown">
+            <a href="/gio-hang" class="dropdown-toggle" role="button">
+                <div class="icon">
+                    <i class="icon-shopping-cart"></i>
+                    <span id="checkout_items" class="cart-count">0</span>
+                </div>
+                <p>Giỏ</p>
+            </a>
+        </div><!-- End .cart-dropdown -->
+    </div><!-- End .header-right -->
+</div><!-- End .container -->
+@section scripts{
+    @*<script src="~/Scripts/jquery-3.7.0.min.js"></script>*@
+    @*<script src="~/Scripts/jquery-ui.js"></script>*@
+    <script src="~/Assets/client/js/client/basecontroller.js"></script>
+}

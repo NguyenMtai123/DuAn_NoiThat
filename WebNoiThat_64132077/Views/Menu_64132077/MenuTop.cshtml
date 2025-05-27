@@ -1,0 +1,61 @@
+﻿@model List<WebNoiThat_64132077.Models.EF.Menu>
+@section Styles{
+    <style>
+        .dropdown-menu-large {
+            min-width: 300px; /* Tăng chiều rộng của dropdown */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 15px; /* Tăng khoảng cách bên trong */
+        }
+
+            .dropdown-menu-large a {
+                padding: 10px 15px; /* Tăng kích thước khoảng cách giữa các mục */
+            }
+    </style>
+}
+<div class="container">
+    <div class="header-left">
+        <a href="tel:#" class="text-decoration-none">
+            <i class="icon-phone"></i> Điện thoại: +086 989 2487
+        </a>
+    </div><!-- End .header-left -->
+
+    <div class="header-right">
+        <ul class="nav">
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tiếng việt
+                </a>
+            </li>
+
+            @foreach (var item in Model)
+            {
+                <li class="nav-item">
+                    <a href="@item.Link" target="@item.Target" class="nav-link">@item.Name</a>
+                </li>
+            }
+
+            @{
+                var session = (WebNoiThat_64132077.Common.UserLogin)Session[WebNoiThat_64132077.Common.CommonConstants.USER_SESSION];
+            }
+
+            @if (session == null)
+            {
+                <li class="nav-item">
+                    <a href="/dang-nhap" class="nav-link">Đăng nhập/Đăng ký</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Xin chào, @session.UserName
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-large" aria-labelledby="userDropdown">
+                        @Html.ActionLink("Tài khoản của tôi", "MyAccount", "User_64132077", null, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Đăng xuất", "Logout", "User_64132077", null, new { @class = "dropdown-item" })
+                    </div>
+                </li>
+            }
+        </ul>
+    </div><!-- End .header-right -->
+</div><!-- End .container -->

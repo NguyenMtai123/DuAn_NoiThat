@@ -1,0 +1,261 @@
+﻿@model PagedList.IPagedList<WebNoiThat_64132077.Models.EF.Product>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebNoiThat_64132077.Models.EF.WebNoiThat_64132077DbContext db = new WebNoiThat_64132077.Models.EF.WebNoiThat_64132077DbContext();
+}
+@section Styles{
+    <link rel="stylesheet" href="/Assets/client/css/plugins/nouislider/nouislider.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style>
+        .custom-control-label.active {
+            color: red;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            margin-top: 10px; /* Khoảng cách phía trên nút */
+        }
+    </style>
+}
+<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+    <div class="container">
+        <h1 class="page-title">Sản phẩm<span>Shop</span></h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active"><a href="#">Sản phẩm</a></li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="toolbox">
+                    <div class="toolbox-left">
+                        <div class="toolbox-info">
+                            <span>Sản phẩm</span>
+                        </div><!-- End .toolbox-info -->
+                    </div><!-- End .toolbox-left -->
+
+                    <div class="toolbox-right">
+                        <div class="toolbox-sort">
+                            <div class="select-custom">
+                                <select name="sortby" id="sortby" class="form-control">
+                                    <option value="popularity" selected="selected">Tất cả sản phẩm</option>
+                                </select>
+                            </div>
+                        </div><!-- End .toolbox-sort -->
+                    </div><!-- End .toolbox-right -->
+                </div><!-- End .toolbox -->
+
+                <div class="products mb-3">
+                    <div class="row justify-content-center">
+
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                var reviews = db.Reviews.Where(r => r.ProductID == item.ID).ToList();
+                                int reviewCount = reviews.Count();
+                                double avgRating = reviewCount > 0 ? reviews.Average(r => r.Rate) : 0;
+
+                                // Tính phần trăm mức độ đánh giá (ví dụ: 20% cho 1 sao)
+                                var ratingWidth = avgRating * 20; // 1 sao = 20%
+                                <!-- Product 1 -->
+                                var strImge = "";
+                                var img = item.ProductImages.FirstOrDefault(x => x.IsDefault);
+                                if (img != null)
+                                {
+                                    strImge = img.Path;
+                                }
+                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                    <div class="product product-7 text-center">
+                                        <figure class="product-media">
+                                            @if (item.IsSale && item.PromotionPrice > 0)
+                                            {
+                                                <span class="product-label label-sale">Sale</span>
+                                            }
+
+                                            @if (item.CreateDate.HasValue && (DateTime.Now - item.CreateDate.Value).TotalDays <= 7)
+                                            {
+                                                <span class="product-label label-new">New</span>
+                                            }
+
+                                            @if (item.Hot != null && item.Hot > DateTime.Now)
+                                            {
+                                                <span class="product-label label-top">Hot</span>
+                                            }
+                                            <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">
+                                                <img src="@strImge" alt="@item.Name" class="product-image" style="height:220px">
+                                            </a>
+
+                                            <div class="product-action-vertical">
+                                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist"
+                                                   onclick="addToWishlist(@item.ID)">
+                                                    <span>add to wishlist</span>
+                                                </a>
+                                            </div><!-- End .product-action-vertical -->
+                                            <div class="product-action">
+                                                @if (item.Quantity > 0)
+                                                {
+                                                    <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@item.ID"><span>add to cart</span></a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="btn btn-outline-danger">Hết hàng</span>
+                                                }
+                                            </div><!-- End .product-action -->
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <div class="product-cat">
+                                                <a href="/danh-muc-san-phan/@item.ProductCategory.SeoTitle-@item.ProductCategory.ID">@item.ProductCategory.Name</a>
+                                            </div><!-- End .product-cat -->
+                                            <h3 class="product-title"><a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">@item.Name</a></h3><!-- End .product-title -->
+                                            <div class="product-price">
+                                                @if (item.IsSale && item.PromotionPrice > 0)
+                                                {
+                                                    <span class="new-price">@item.PromotionPrice đ</span>
+                                                    <span class="old-price" style="text-decoration: line-through;">@item.Price đ</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.Price đ</span>
+                                                }
+                                            </div><!-- End .product-price -->
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: @(ratingWidth)%;"></div><!-- End .ratings-val -->
+                                                </div><!-- End .ratings -->
+                                                <span class="ratings-text">( @reviewCount Reviews )</span>
+                                            </div><!-- End .ratings-container -->
+                                            <!-- End .product-nav -->
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                            }
+                        }
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice })" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                                </a>
+                            </li>
+                        }
+                        @foreach (var page in Enumerable.Range(1, Model.PageCount))
+                        {
+                            <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = page, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice })">@page</a>
+                            </li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice })" aria-label="Next">
+                                    Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div><!-- End .col-lg-9 -->
+            <aside class="col-lg-3 order-lg-first">
+                <div class="sidebar sidebar-shop">
+                    <div class="widget widget-clean">
+                        <label>Bộ lọc:</label>
+                    </div><!-- End .widget widget-clean -->
+
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title">
+                            <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                                Danh mục
+                            </a>
+                        </h3><!-- End .widget-title -->
+                        @{Html.RenderAction("MenuLeftProduct", "Menu_64132077");}
+                    </div><!-- End .widget -->
+
+
+
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title">
+                            <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
+                                Giá sản phẩm
+                            </a>
+                        </h3><!-- End .widget-title -->
+
+                        <div class="collapse show" id="widget-5">
+                            <div class="widget-body">
+                                <div class="filter-price">
+                                    <div class="filter-price-text">
+                                        Chọn giá:
+                                        <span id="filter-price-range-t"></span>
+                                    </div><!-- End .filter-price-text -->
+
+                                    <div id="price-slider-t"></div><!-- End #price-slider -->
+                                </div><!-- End .filter-price -->
+                            </div><!-- End .widget-body -->
+                            <div class="button-container">
+                                <button id="filter-button" type="submit" class="btn btn-primary">Lọc</button>
+                            </div>
+                        </div><!-- End .collapse -->
+                    </div><!-- End .widget -->
+                </div><!-- End .sidebar sidebar-shop -->
+            </aside><!-- End .col-lg-3 -->
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
+@section scripts{
+    <script src="/Assets/client/js/wNumb.js"></script>
+    <script src="/Assets/client/js/nouislider.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+        const minPrice = parseInt("@ViewBag.MinPrice" || 0);
+        const maxPrice = parseInt("@ViewBag.MaxPrice" || 1000000);
+
+        $("#price-slider-t").slider({
+            range: true,
+            min: 0,
+            max: 1000000,
+            step: 10000,
+            values: [minPrice, maxPrice],
+            slide: function (event, ui) {
+                $("#filter-price-range-t").text(ui.values[0] + " - " + ui.values[1]);
+            }
+        });
+
+        // Hiển thị giá trị thanh trượt
+        $("#filter-price-range-t").text(minPrice + " - " + maxPrice);
+
+        // Xử lý nút Filter
+            $("#filter-button").click(function () {
+            const minPrice = $("#price-slider-t").slider("values", 0);
+            const maxPrice = $("#price-slider-t").slider("values", 1);
+
+            // Điều hướng đến action Index với các tham số minPrice và maxPrice
+            window.location.href = `/san-pham/${minPrice}/${maxPrice}`;
+        });
+    });
+
+    </script>
+    <script src="~/Scripts/WishList.js"></script>
+}

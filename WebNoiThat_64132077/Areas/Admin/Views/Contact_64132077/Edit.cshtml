@@ -1,0 +1,100 @@
+﻿@model WebNoiThat_64132077.Models.EF.Contact
+
+@{
+    ViewBag.Title = "Chỉnh sửa";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header{
+    <div class="content-header">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h3 class="m-0">Chỉnh sửa liên hệ</h3>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/Home_64132077">Home</a></li>
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/PostCategory_64132077">Liên hệ</a></li>
+                    <li class="breadcrumb-item active">Chỉnh sửa</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+}
+<section class="section">
+    <div class="section-body">
+        <div class="card">
+            @using (Html.BeginForm("Edit", "Contact_64132077", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="card-header">
+                    <h4>Thông tin liên hệ</h4>
+                </div>
+                <div class="card-body">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Detail, new { @class = "form-control", id = "txtContent" })
+                            @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Map, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Map, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.Map, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-3 col-lg-1" })
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(model => model.Status)
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-12 d-flex">
+                            <input type="submit" value="Create" class="btn btn-outline-primary mr-4" />
+                            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-outline-dark" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+@section script{
+    <script>
+        $(document).ready(function () {
+            $('#btnSelectImage').on('click', function (e) {
+                e.preventDefault();
+                var finder = new CKFinder();
+                finder.selectActionFunction = function (url) {
+                    $('#txtImage').val(url);
+                };
+                finder.popup();
+            });
+
+            CKEDITOR.replace('txtContent', {
+                customConfig: '/Assets/admin/Plugin/ckeditor/config.js',
+                allowedContent: true,
+
+            });
+        });
+    </script>
+}

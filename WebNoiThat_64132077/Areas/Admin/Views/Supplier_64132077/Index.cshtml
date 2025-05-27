@@ -1,0 +1,191 @@
+﻿@model PagedList.IPagedList<WebNoiThat_64132077.Models.EF.Supplier>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Danh sách nhà cung cấp";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section header {
+    <div class="content-header">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h3 class="m-0">Quản Lý Nhà Cung Cấp</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a style="text-decoration: none" href="/Admin/Home_64132077">Home</a></li>
+                    <li class="breadcrumb-item active">Nhà cung cấp</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header mb-3">
+                        <h4>Danh sách nhà cung cấp</h4>
+                        <div class="card-header-form">
+                            <div class="">
+                                <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+                                @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-outline-primary" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <div class="custom-checkbox custom-checkbox-table custom-control">
+                                                <input type="checkbox" class="custom-control-input" id="SelectAll" />
+                                                <label for="SelectAll" class="custom-control-label">&nbsp;</label>
+                                            </div>
+                                        </th>
+                                        <th>#</th>
+                                        <th>Tên Nhà Cung Cấp</th>
+                                        <th>Email</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        var index = (Model.PageNumber - 1) * Model.PageSize;
+                                        foreach (var supplier in Model)
+                                        {
+                                            index++;
+                                            <tr id="row-@supplier.ID">
+                                                <td class="p-0 text-center">
+                                                    <div class="custom-checkbox custom-control">
+                                                        <input type="checkbox" id="checkbox-@index" class="custom-control-input cbkItem" value="@supplier.ID" />
+                                                        <label for="checkbox-@index" class="custom-control-label">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>@index</td>
+                                                <td>@supplier.Name</td>
+                                                <td>@supplier.Email</td>
+                                                <td>@supplier.Phone</td>
+                                                <td>@(supplier.CreateDate.HasValue ? supplier.CreateDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        @Html.ActionLink("Sửa", "Edit", new { id = supplier.ID }, new { @class = "btn btn-warning btn-sm mr-2" })
+                                                        <button class="btn btn-danger btn-sm btn-delete" data-id="@supplier.ID">Xóa</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8" class="text-center">Không có nhà cung cấp nào</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-right">
+                        <nav class="d-inline-block">
+                            <ul class="pagination mb-0">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = 1 })">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                @{
+                                    int startPage = Math.Max(1, Model.PageNumber - 1);
+                                    int endPage = Math.Min(Model.PageCount, Model.PageNumber + 1);
+                                }
+
+                                @for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                                    </li>
+                                }
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount })">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section script{
+    <script src="~/Assets/admin/js/controller/adminjs/supplier.js"></script>
+}

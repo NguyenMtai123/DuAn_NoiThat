@@ -1,0 +1,50 @@
+﻿@model List<WebNoiThat_64132077.Models.EF.ProductCategory>
+
+@if (Model != null && Model.Any())
+{
+    <div class="container">
+        <h2 class="title text-center mb-2">Danh mục sản phẩm</h2><!-- End .title -->
+        <div class="cat-blocks-container">
+            <div class="row">
+                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                     data-owl-options='{
+                    "nav": false,
+                    "dots": true,
+                    "margin": 10,
+                    "loop": false,
+                    "responsive": {
+                        "0": {
+                            "items":2
+                        },
+                        "480": {
+                            "items":2
+                        },
+                        "768": {
+                            "items":3
+                        },
+                        "992": {
+                            "items":4
+                        },
+                        "1200": {
+                            "items":5,
+                            "nav": true
+                        }
+                    }
+                }'>
+                    @foreach (var item in Model)
+                    {
+                        <a href="/danh-muc-san-pham/@item.SeoTitle-@item.ID" class="cat-block">
+                            <figure>
+                                <span>
+                                    <img src="@item.Image" alt="Category image" style="height:120px; width:180px">
+                                </span>
+                            </figure>
+
+                            <h3 class="cat-block-title mt-2">@item.Name</h3><!-- End .cat-block-title -->
+                        </a>
+                    }
+                </div><!-- End .row -->
+            </div><!-- End .cat-blocks-container -->
+        </div>
+    </div><!-- End .container -->
+}
