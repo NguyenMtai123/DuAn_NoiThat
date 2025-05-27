@@ -10,6 +10,7 @@ using WebNoiThat_64132077.Common;
 using WebNoiThat_64132077.Models;
 using WebNoiThat_64132077.Models.Dao;
 using WebNoiThat_64132077.Models.EF;
+using WebNoiThat_64132077.Helper;
 
 namespace WebNoiThat_64132077.Areas.Admin.Controllers
 {
@@ -178,11 +179,6 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-
-            // Kiểm tra token và xác nhận tài khoản người dùng
-            // Ví dụ: Cập nhật tài khoản với trạng thái 'Status' = true
-
-            // Giả sử token đã được xác thực
             var userDao = new UserDao();
             var user = userDao.GetUserByEmail("user@example.com"); // Tìm người dùng dựa trên email
             if (user != null)
@@ -193,6 +189,84 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
 
             TempData["Message"] = "Tài khoản của bạn đã được xác thực thành công.";
             return RedirectToAction("Login", "Login_64132077");
+        }
+
+        private WebNoiThat_64132077DbContext db = new WebNoiThat_64132077DbContext();
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (user != null)
+                {
+                    // Gửi email chứa mật khẩu (giả sử chưa mã hóa)
+                    string subject = "Khôi phục mật khẩu";
+                    string body = $"Mật khẩu của bạn là: {user.Password}";
+                    EmailSender.SendEmail(user.Email, subject, body);
+
+                    ViewBag.Message = "Mật khẩu đã được gửi đến email của bạn.";
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Email không tồn tại trong hệ thống.");
+                }
+            }
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult ResetPassword(string token)
+        {
+            var resetToken = db.PasswordResetTokens.FirstOrDefault(t => t.Token == token && t.ExpiryDate > DateTime.Now);
+            if (resetToken == null)
+            {
+                return HttpNotFound("Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.");
+            }
+            var model = new ResetPasswordModel { Token = token };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var resetToken = db.PasswordResetTokens.FirstOrDefault(t => t.Token == model.Token && t.ExpiryDate > DateTime.Now);
+                if (resetToken == null)
+                {
+                    ModelState.AddModelError("", "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.");
+                    return View(model);
+                }
+
+                var user = db.Users.Find(resetToken.UserID);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Người dùng không tồn tại.");
+                    return View(model);
+                }
+
+                // Cập nhật mật khẩu mới (băm lại)
+                user.Password = Encrytor.GetHash(model.NewPassword);
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                // Xóa token đã dùng
+                db.PasswordResetTokens.Remove(resetToken);
+
+                db.SaveChanges();
+
+                ViewBag.Message = "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập với mật khẩu mới.";
+                return View("ResetPasswordSuccess");
+            }
+            return View(model);
         }
 
 

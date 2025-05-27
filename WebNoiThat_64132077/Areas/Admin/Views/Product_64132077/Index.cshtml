@@ -22,60 +22,81 @@
         </div><!-- /.row -->
     </div>
 }
-@section Styles {
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-    <style>
-        th a, th a:visited {
-            color: #000; /* Màu xanh giống như liên kết mặc định */
-            text-decoration: none; /* Loại bỏ gạch chân */
+<style>
+    /* Giữ nguyên các style cho th */
+    th a, th a:visited {
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        th a:hover {
+            color: #000;
+            text-decoration: none;
             font-weight: bold;
         }
 
-            th a:hover {
-                color: #000; /* Màu khi hover */
-                text-decoration: none; /* Gạch chân khi hover */
-                font-weight: bold;
-            }
+    th {
+        cursor: pointer;
+    }
 
-        th {
-            cursor: pointer; /* Thêm con trỏ kiểu pointer để trông như một liên kết */
+    .form-group .form-control {
+        height: 45px;
+        font-size: 14px;
+    }
+
+    /* Sử dụng spacing Bootstrap cho padding */
+    .form-row > .form-group {
+        padding-right: 0.5rem; /* Thay vì 10px */
+    }
+
+    .card-header-form .form-row {
+        margin-bottom: -20px;
+    }
+
+    /* Điều chỉnh lại các vị trí */
+    .search1 {
+        padding: 0.3rem;
+    }
+
+    .delete {
+        /* Thay vì margin cố định, đặt flex */
+        margin-top: 0;
+        margin-left: auto;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+
+    .header1 {
+        margin-top: 0;
+    }
+
+    .card-header-form {
+        margin-right: 0;
+    }
+
+    .btn-search {
+        margin-left: 0;
+    }
+
+    /* Media queries cho mobile */
+    @@media (max-width: 576px) {
+        .form-row {
+            display: block !important;
         }
 
-        .form-group .form-control {
-            height: 45px; /* Chiều cao cố định cho ô input/dropdown */
-            font-size: 14px;
+        .imgproduct {
+            width: 40px !important;
+            height: 40px !important;
         }
+        /*     Bảng cuộn ngang */
+        .table-responsive {
+            overflow-x: auto;
+        }
+    }
+</style>
 
-        .form-row > .form-group {
-            padding-right: 10px;
-        }
-
-        .card-header-form .form-row {
-            margin-bottom: -20px;
-        }
-
-        .search1 {
-            padding: 5px;
-        }
-
-        .delete {
-            margin-left: -100px;
-            margin-top: -35px;
-        }
-
-        .header1 {
-            margin-top: -75px;
-        }
-
-        .card-header-form {
-            margin-right: 250px;
-        }
-
-        .btn-search {
-            margin-left: 200px;
-        }
-    </style>
-}
 <section class="section">
     <div class="section-body">
 
@@ -89,31 +110,28 @@
                             {
                                 <!-- Hàng 1: Mã sản phẩm và Tên sản phẩm -->
                                 <div class="form-row">
-                                    <div class="form-group col-md-6 search1">
+                                    <div class="form-group col-sm-12 col-md-6 search1">
                                         @Html.TextBox("searchCode", ViewBag.SearchCode as string, new { @class = "form-control", placeholder = "Mã sản phẩm" })
                                     </div>
-                                    <div class="form-group col-md-6 search1">
+                                    <div class="form-group col-sm-12 col-md-6 search1">
                                         @Html.TextBox("searchName", ViewBag.SearchName as string, new { @class = "form-control", placeholder = "Tên sản phẩm" })
                                     </div>
-
                                 </div>
 
-
-                                <!-- Hàng 2: Giảm giá và Khoảng giá -->
                                 <div class="form-row">
-
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-sm-12 col-md-6">
                                         @Html.TextBox("minPrice", ViewBag.MinPrice as string, new { @class = "form-control", placeholder = "Giá tối thiểu" })
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-sm-12 col-md-6">
                                         @Html.TextBox("maxPrice", ViewBag.MaxPrice as string, new { @class = "form-control", placeholder = "Giá tối đa" })
                                     </div>
                                 </div>
+
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-sm-12 col-md-6">
                                         @Html.DropDownList("searchCategoryId", ViewBag.CategoryList as SelectList, "Tất cả danh mục", new { @class = "form-control" })
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-sm-12 col-md-6">
                                         @Html.DropDownList("isSale", new SelectList(new[] {
             new SelectListItem { Text = "Tất cả", Value = "" },
             new SelectListItem { Text = "Đang giảm giá", Value = "true" },
@@ -122,9 +140,10 @@
                                     </div>
                                 </div>
 
+
                                 <!-- Hàng 3: Nút tìm kiếm -->
                                 <div class="form-row">
-                                    <div class="form-group col-md-12 text-center">
+                                    <div class="form-group col-md-12 mt-sm-2 text-center">
                                         <button type="submit" class="btn btn-primary px-4 py-2">
                                             <i class="fas fa-search"></i> Tìm kiếm
                                         </button>
@@ -173,7 +192,7 @@
                                     </th>
                                     <th>Số lượng</th>
                                     <th>Sale</th>
-                                    <th>Home</th>
+                                    @*<th>Home</th>*@
                                     <th>Action</th>
                                 </tr>
                                 @if (Model != null && Model.Any())
@@ -217,9 +236,9 @@
                                             <td class="text-center">
                                                 <a href='#' data-id="@item.ID" class="btnSale">@Html.Raw(strCheckSale)</a>
                                             </td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn-active" data-id="@item.ID">@Html.Raw(strCheck)</a>
-                                            </td>
+                                            @*<td class="text-center">
+                                                    <a href="#" class="btn-active" data-id="@item.ID">@Html.Raw(strCheck)</a>
+                                                </td>*@
                                             <td>
                                                 <div class="d-flex">
                                                     @Html.ActionLink("Xem", "Details", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mr-2" })

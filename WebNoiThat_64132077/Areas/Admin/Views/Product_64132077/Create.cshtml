@@ -139,7 +139,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-8" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", type = "number", min = "0", step = "1", @Value = 1 })
                                             @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-8" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", min = "0", step = "1000", @Value = 0 })
                                             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -217,13 +217,13 @@
                                 </div>
                             </div>
 
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-6" })
-                                    <div class="col-md-12">
-                                        @Html.TextAreaFor(model => model.Detail, new { @class = "form-control", id = "txtContent" })
-                                        @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>*@
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Detail, new { @class = "form-control", id = "txtContent" })
+                                    @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
 
                         </div>
@@ -321,32 +321,32 @@
             var str = "";
             if (currentId == 1) {
                 str += `<tr id="trow_${currentId}" style="margin-bottom: 10px;">
-                                                                                            <td class="text-center">${currentId}</td>
-                                                                                            <td class="text-center">
-                                                                                                <img width="80" style="height:80px; margin: 5px;" src="${url}" />
-                                                                                                <input type='hidden' value="${url}" name="Images"/>
-                                                                                            </td>
-                                                                                            <td class="text-center">
-                                                                                                <input type="radio" name="rDefault" value="${currentId}" checked="checked"/>
-                                                                                            </td>
-                                                                                            <td class="text-center">
-                                                                                                <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
-                                                                                            </td>
-                                                                                        </tr>`;
+                                                                                                                    <td class="text-center">${currentId}</td>
+                                                                                                                    <td class="text-center">
+                                                                                                                        <img width="80" style="height:80px; margin: 5px;" src="${url}" />
+                                                                                                                        <input type='hidden' value="${url}" name="Images"/>
+                                                                                                                    </td>
+                                                                                                                    <td class="text-center">
+                                                                                                                        <input type="radio" name="rDefault" value="${currentId}" checked="checked"/>
+                                                                                                                    </td>
+                                                                                                                    <td class="text-center">
+                                                                                                                        <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
+                                                                                                                    </td>
+                                                                                                                </tr>`;
             } else {
                 str += `<tr id="trow_${currentId}" style="margin-bottom: 10px;">
-                                                                                            <td class="text-center">${currentId}</td>
-                                                                                            <td class="text-center">
-                                                                                                <img width="80" style="height:80px; margin: 5px;" src="${url}" />
-                                                                                                <input type='hidden' value="${url}" name="Images"/>
-                                                                                            </td>
-                                                                                            <td class="text-center">
-                                                                                                <input type="radio" name="rDefault" value="${currentId}"/>
-                                                                                            </td>
-                                                                                            <td class="text-center">
-                                                                                                <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
-                                                                                            </td>
-                                                                                        </tr>`;
+                                                                                                                    <td class="text-center">${currentId}</td>
+                                                                                                                    <td class="text-center">
+                                                                                                                        <img width="80" style="height:80px; margin: 5px;" src="${url}" />
+                                                                                                                        <input type='hidden' value="${url}" name="Images"/>
+                                                                                                                    </td>
+                                                                                                                    <td class="text-center">
+                                                                                                                        <input type="radio" name="rDefault" value="${currentId}"/>
+                                                                                                                    </td>
+                                                                                                                    <td class="text-center">
+                                                                                                                        <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
+                                                                                                                    </td>
+                                                                                                                </tr>`;
             }
             $('#tbHtml').append(str);
             $('#tCurrentId').val(currentId);

@@ -220,6 +220,10 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
             }
             // Cập nhật tên nhân viên từ session
             order.Status = trangthai;
+            if (trangthai == 2)
+            {
+                order.DeliveryDate = DateTime.Now;
+            }
             db.Entry(order).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
 
@@ -285,6 +289,12 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
                 {
                     Modifidate = userSession.UserName; // Lấy tên người dùng từ session
                 }
+                var existingEmail = db.Users.FirstOrDefault(u => u.Email == Email);
+                if (existingEmail != null)
+                {
+                    return Json(new { success = false, message = "Email đã tồn tại. Vui lòng chọn emaik khác" });
+                }
+
                 // Tạo khách hàng tương ứng
                 var customer = new User
                 {

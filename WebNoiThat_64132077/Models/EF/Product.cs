@@ -21,7 +21,7 @@
 
         public long ID { get; set; }
 
-        [StringLength(50)]
+        [StringLength(10)]
         [Display(Name = "Mã sản phẩm")]
         [Required(ErrorMessage = "Vui lòng nhập mã sản phẩm")]
 

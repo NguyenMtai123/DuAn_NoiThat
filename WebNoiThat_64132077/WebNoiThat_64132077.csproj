@@ -163,6 +163,7 @@
     <Compile Include="Areas\Admin\Controllers\Support_64132077Controller.cs" />
     <Compile Include="Areas\Admin\Controllers\UserGroup_64132077Controller.cs" />
     <Compile Include="Areas\Admin\Controllers\User_64132077Controller.cs" />
+    <Compile Include="Areas\Admin\Models\ForgotPasswordModel.cs" />
     <Compile Include="Areas\Admin\Models\RegisterModel.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Common\CommonConstants.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\EmailSender.cs" />
     <Compile Include="Migrations\202412291013091_Update.cs" />
     <Compile Include="Migrations\202412291013091_Update.Designer.cs">
       <DependentUpon>202412291013091_Update.cs</DependentUpon>
@@ -3715,6 +3717,7 @@
     <Content Include="Areas\Admin\Views\Statistic_64132077\PrintReport.cshtml" />
     <Content Include="Areas\Admin\Views\Order_64132077\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Order_64132077\Print.cshtml" />
+    <Content Include="Areas\Admin\Views\Login_64132077\ForgotPassword.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

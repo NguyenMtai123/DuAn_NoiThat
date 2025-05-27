@@ -139,7 +139,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-8" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", type = "number", min = "0", step = "1" })
                                             @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Warranty, htmlAttributes: new { @class = "control-label col-md-8" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Warranty, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Warranty, new { @class = "form-control", type = "number", min = "0", step = "1" })
                                             @Html.ValidationMessageFor(model => model.Warranty, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-8" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", min = "0", step = "1000" })
                                             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -166,7 +166,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.PromotionPrice, htmlAttributes: new { @class = "control-label col-md-12" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.PromotionPrice, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.PromotionPrice, new { @class = "form-control", type = "number", min = "0", step = "1000" })
                                             @Html.ValidationMessageFor(model => model.PromotionPrice, "", new { @class = "text-danger" })
                                         </div>
                                     </div>

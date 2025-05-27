@@ -78,11 +78,27 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
         public ActionResult Create(User model)
         {
             var existingUser = db.Users.FirstOrDefault(u => u.Username == model.Username);
+            var existingEmail = db.Users.FirstOrDefault(u => u.Email == model.Email);
             if (existingUser != null)
             {
                 SetAlert("Tên tài khoản đã tồn tại. Vui lòng chọn tên khác.", "error");
                 // Nếu tài khoản đã tồn tại, thêm thông báo lỗi vào ModelState
                 ModelState.AddModelError("Username", "Tên tài khoản đã tồn tại.");
+                var group = db.UserGroups.Select(g => new SelectListItem
+                {
+                    Value = g.ID.ToString(),
+                    Text = g.Name
+                }).ToList();
+                ViewBag.GroupID = new SelectList(group, "Value", "Text");
+
+                return View(model);
+            }
+
+            if (existingEmail != null)
+            {
+                SetAlert("Email đã tồn tại. Vui lòng chọn email khác.", "error");
+                // Nếu tài khoản đã tồn tại, thêm thông báo lỗi vào ModelState
+                ModelState.AddModelError("Email", "Email này đã tồn tại.");
                 var group = db.UserGroups.Select(g => new SelectListItem
                 {
                     Value = g.ID.ToString(),
