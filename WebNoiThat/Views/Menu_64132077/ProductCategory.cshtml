@@ -1,0 +1,23 @@
+﻿@model List<WebNoiThat_64132077.Models.EF.ProductCategory>
+
+<div class="dropdown category-dropdown">
+    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
+        Tất cả sản phẩm
+    </a>
+
+    <div class="dropdown-menu">
+        <nav class="side-nav">
+            <ul class="menu-vertical sf-arrows">
+                @foreach (var item in Model)
+                {
+                    <li class="megamenu-container">
+                        <a class="sf-with-ul" href="/danh-muc-san-pham/@item.SeoTitle-@item.ID">@item.Name</a>
+
+                    </li>
+                }
+
+
+            </ul><!-- End .menu-vertical -->
+        </nav><!-- End .side-nav -->
+    </div>
+</div><!-- End .category-dropdown -->

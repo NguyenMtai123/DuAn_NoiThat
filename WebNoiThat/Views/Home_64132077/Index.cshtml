@@ -1,0 +1,485 @@
+﻿
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var slides = (List<WebNoiThat_64132077.Models.EF.Slide>)ViewBag.SlideList;
+    var listNewProducts = (List<WebNoiThat_64132077.Models.EF.Product>)ViewBag.NewProductList;
+    var listHotProducts = (List<WebNoiThat_64132077.Models.EF.Product>)ViewBag.HotProductList;
+    var listSaleProducts = (List<WebNoiThat_64132077.Models.EF.Product>)ViewBag.SaleProductList;
+    var postList = (List<WebNoiThat_64132077.Models.EF.Post>)ViewBag.PostList;
+}
+
+<div class="intro-section bg-lighter pt-5 pb-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="intro-slider-container slider-container-ratio slider-container-1 mb-2 mb-lg-0">
+                    <div class="intro-slider intro-slider-1 owl-carousel owl-simple owl-light owl-nav-inside" data-toggle="owl" data-owl-options='{
+                                        "nav": false,
+                                        "responsive": {
+                                            "768": {
+                                                "nav": true
+                                            }
+                                        }
+                                    }'>
+
+                        @if (slides != null)
+                        {
+                            foreach (var item in slides)
+                            {
+
+                                <div class="intro-slide">
+                                    <figure class="slide-image">
+                                        <picture>
+                                            <source media="(max-width: 480px)" srcset="/Assets/client/images/slider/slide.jpg">
+                                            <img src="@item.Image" alt="Image Desc" height="200">
+                                        </picture>
+                                    </figure><!-- End .slide-image -->
+
+                                    <div class="intro-content">
+                                        <<h3 class="intro-subtitle">Bộ Sưu Tập</h3><!-- Kết thúc .h3 intro-subtitle -->
+                                        <h1 class="intro-title">Nội Thất<br>Phòng Khách</h1><!-- Kết thúc .intro-title -->
+
+                                        <a href="/san-pham" class="btn btn-outline-white">
+                                            <span>SHOP NOW</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </a>
+                                    </div><!-- End .intro-content -->
+                                </div><!-- End .intro-slide -->
+                            }
+
+                        }
+                    </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+                    <span class="slider-loader"></span><!-- End .slider-loader -->
+                </div><!-- End .intro-slider-container -->
+            </div><!-- End .col-lg-8 -->
+
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .bg-lighter -->
+<div class="mb-4"></div><!-- End .mb-2 -->
+
+@{Html.RenderAction("MenuProductCategory", "Menu_64132077");}
+
+<div class="mb-6"></div><!-- End .mb-6 -->
+<div class="container">
+    <div class="heading heading-center mb-3">
+        <h2 class="title">Top Sản phẩm</h2><!-- End .title -->
+    </div>
+    <ul class="nav nav-pills nav-border-anim nav-big justify-content-center mb-3" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="products-new-link" data-toggle="tab" href="#products-new-tab" role="tab" aria-controls="products-new-tab" aria-selected="true">New</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="products-hot-link" data-toggle="tab" href="#products-hot-tab" role="tab" aria-controls="products-hot-tab" aria-selected="false">Hot</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="products-sale-link" data-toggle="tab" href="#products-sale-tab" role="tab" aria-controls="products-sale-tab" aria-selected="false">Sale</a>
+        </li>
+    </ul>
+</div><!-- End .container -->
+
+<div class="container">
+    <div class="tab-content tab-content-carousel">
+        <div class="tab-pane p-0 fade show active" id="products-new-tab" role="tabpanel" aria-labelledby="products-new-link">
+            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                 data-owl-options='{
+                                "nav": false,
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":5,
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+                @foreach (var item in listNewProducts)
+                {
+                    var strImge = "";
+                    var img = item.ProductImages.FirstOrDefault(x => x.IsDefault);
+                    if (img != null)
+                    {
+                        strImge = img.Path;
+                    }
+                    <div class="product product-11 text-center">
+                        <figure class="product-media">
+                            @if (item.Hot != null && item.Hot > DateTime.Now)
+                            {
+                                <span class="product-label label-top">Hot</span>
+                            }
+                            @if (item.IsSale && item.PromotionPrice > 0)
+                            {
+                                <span class="product-label label-sale">Sale</span>
+                            }
+                            @if (item.CreateDate.HasValue && (DateTime.Now - item.CreateDate.Value).TotalDays <= 7)
+                            {
+                                <span class="product-label label-new">New</span>
+                            }
+
+                            <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">
+                                <img src="@strImge" alt="@item.Name" class="product-image" style="height:220px">
+                            </a>
+                            <div class="product-action-vertical">
+                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist"
+                                   onclick="addToWishlist(@item.ID)">
+                                    <span>add to wishlist</span>
+                                </a>
+                            </div><!-- End .product-action-vertical -->
+
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body">
+                            <div class="ratings-container">
+                                @if (ViewBag.ProductRatings.ContainsKey(item.ID))
+                                {
+                                    var rating = ViewBag.ProductRatings[item.ID];
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: @(rating.Item1 * 20)%"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">(@rating.Item2 Reviews)</span>
+                                }
+                                else
+                                {
+                                    <span class="ratings-text">(No Reviews)</span>
+                                }
+                            </div>
+                            <h3 class="product-title"><a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">@item.Name</a></h3><!-- End .product-title -->
+                            <div class="product-price">
+                                @if (item.IsSale && item.PromotionPrice > 0)
+                                {
+                                    <span class="new-price">@item.PromotionPrice đ</span>
+                                    <span class="old-price" style="text-decoration: line-through;">@item.Price đ</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Price đ</span>
+                                }
+                            </div><!-- End .product-price -->
+                        </div><!-- End .product-body -->
+                        <div class="product-action">
+                            @if (item.Quantity > 0)
+                            {
+                                <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@item.ID"><span>add to cart</span></a>
+                            }
+                            else
+                            {
+                                <span class="btn btn-outline-danger">Hết hàng</span>
+                            }
+                        </div><!-- End .product-action -->
+                    </div><!-- End .product -->
+                }
+
+
+            </div><!-- End .owl-carousel -->
+        </div><!-- .End .tab-pane -->
+        <div class="tab-pane p-0 fade" id="products-hot-tab" role="tabpanel" aria-labelledby="products-hot-link">
+            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                 data-owl-options='{
+                                "nav": false,
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":5,
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+                @foreach (var item in listHotProducts)
+                {
+                    var strImge = "";
+                    var img = item.ProductImages.FirstOrDefault(x => x.IsDefault);
+                    if (img != null)
+                    {
+                        strImge = img.Path;
+                    }
+                    <div class="product product-11 text-center">
+                        <figure class="product-media">
+                            @if (item.IsSale && item.PromotionPrice > 0)
+                            {
+                                <span class="product-label label-sale">Sale</span>
+                            }
+
+                            @if (item.CreateDate.HasValue && (DateTime.Now - item.CreateDate.Value).TotalDays <= 7)
+                            {
+                                <span class="product-label label-new">New</span>
+                            }
+
+                            @if (item.Hot != null && item.Hot > DateTime.Now)
+                            {
+                                <span class="product-label label-top">Hot</span>
+                            }
+                            <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">
+                                <img src="@strImge" alt="@item.Name" class="product-image" style="height:220px">
+                            </a>
+                            <div class="product-action-vertical">
+                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist"
+                                   onclick="addToWishlist(@item.ID)">
+                                    <span>add to wishlist</span>
+                                </a>
+                            </div><!-- End .product-action-vertical -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body">
+                            <div class="ratings-container">
+                                @if (ViewBag.ProductRatings.ContainsKey(item.ID))
+                                {
+                                    var rating = ViewBag.ProductRatings[item.ID];
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: @(rating.Item1 * 20)%"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">(@rating.Item2 Reviews)</span>
+                                }
+                            </div>
+                            <h3 class="product-title"><a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">@item.Name</a></h3><!-- End .product-title -->
+                            <div class="product-price">
+                                @if (item.IsSale && item.PromotionPrice > 0)
+                                {
+                                    <span class="new-price">@item.PromotionPrice đ</span>
+                                    <span class="old-price" style="text-decoration: line-through;">@item.Price đ</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Price đ</span>
+                                }
+                            </div><!-- End .product-price -->
+                        </div><!-- End .product-body -->
+                        <div class="product-action">
+                            @if (item.Quantity > 0)
+                            {
+                                <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@item.ID"><span>add to cart</span></a>
+                            }
+                            else
+                            {
+                                <span class="btn btn-outline-danger">Hết hàng</span>
+                            }
+                        </div><!-- End .product-action -->
+                    </div><!-- End .product -->
+                }
+
+            </div><!-- End .owl-carousel -->
+        </div><!-- .End .tab-pane -->
+        <div class="tab-pane p-0 fade" id="products-sale-tab" role="tabpanel" aria-labelledby="products-sale-link">
+            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                 data-owl-options='{
+                                "nav": false,
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":5,
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+                @foreach (var item in listSaleProducts)
+                {
+                    var strImge = "";
+                    var img = item.ProductImages.FirstOrDefault(x => x.IsDefault);
+                    if (img != null)
+                    {
+                        strImge = img.Path;
+                    }
+                    <div class="product product-11 text-center">
+                        <figure class="product-media">
+                            @if (item.Hot != null && item.Hot > DateTime.Now)
+                            {
+                                <span class="product-label label-top">Hot</span>
+                            }
+                            @if (item.CreateDate.HasValue && (DateTime.Now - item.CreateDate.Value).TotalDays <= 7)
+                            {
+                                <span class="product-label label-new">New</span>
+                            }
+
+                            @if (item.IsSale && item.PromotionPrice > 0)
+                            {
+                                <span class="product-label label-sale">Sale</span>
+                            }
+
+
+                            <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">
+                                <img src="@strImge" alt="@item.Name" class="product-image" style="height:220px">
+                            </a>
+                            <div class="product-action-vertical">
+                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist"
+                                   onclick="addToWishlist(@item.ID)">
+                                    <span>add to wishlist</span>
+                                </a>
+                            </div><!-- End .product-action-vertical -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body">
+                            <div class="ratings-container">
+                                @if (ViewBag.ProductRatings.ContainsKey(item.ID))
+                                {
+                                    var rating = ViewBag.ProductRatings[item.ID];
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: @(rating.Item1 * 20)%"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">(@rating.Item2 Reviews)</span>
+                                }
+                                else
+                                {
+                                    <span class="ratings-text">(No Reviews)</span>
+                                }
+                            </div>
+
+                            <h3 class="product-title"><a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">@item.Name</a></h3><!-- End .product-title -->
+                            <div class="product-price">
+                                @if (item.IsSale && item.PromotionPrice > 0)
+                                {
+                                    <span class="new-price">@item.PromotionPrice đ</span>
+                                    <span class="old-price" style="text-decoration: line-through;">@item.Price đ</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Price đ</span>
+                                }
+                            </div><!-- End .product-price -->
+                        </div><!-- End .product-body -->
+                        <div class="product-action">
+                            @if (item.Quantity > 0)
+                            {
+                                <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@item.ID"><span>add to cart</span></a>
+                            }
+                            else
+                            {
+                                <span class="btn btn-outline-danger">Hết hàng</span>
+                            }
+                        </div><!-- End .product-action -->
+                    </div><!-- End .product -->
+                }
+
+            </div><!-- End .owl-carousel -->
+        </div><!-- .End .tab-pane -->
+    </div><!-- End .tab-content -->
+</div><!-- End .container-fluid -->
+
+<div class="container categories pt-6">
+    @{Html.RenderAction("MenuShopCategory", "Menu_64132077");}
+</div><!-- End .container -->
+
+<div class="mb-5"></div><!-- End .mb-6 -->
+
+@{Html.RenderAction("MenuProductSelling", "Menu_64132077");}
+
+<div class="blog-posts pt-7 pb-7" style="background-color: #fafafa;">
+    <div class="container">
+        <h2 class="title-lg text-center mb-3 mb-md-4">Tin tức</h2><!-- End .title-lg text-center -->
+
+        <div class="owl-carousel owl-simple carousel-with-shadow" data-toggle="owl"
+             data-owl-options='{
+                            "nav": false,
+                            "dots": true,
+                            "items": 3,
+                            "margin": 20,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":1
+                                },
+                                "600": {
+                                    "items":2
+                                },
+                                "992": {
+                                    "items":3
+                                }
+                            }
+                        }'>
+            @if (postList != null)
+            {
+                foreach (var item in postList)
+                {
+                    <article class="entry entry-display">
+                        <figure class="entry-media">
+                            <a href="/tin-tuc-chi-tiet/@item.ID">
+                                <img src="@item.Image" alt="@item.Name" style="height:300px">
+                            </a>
+                        </figure><!-- End .entry-media -->
+
+                        <div class="entry-body pb-4 text-center">
+                            <div class="entry-meta">
+                                <a href="#">@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/mm/yyyy"):"")</a>, @item.ViewCount View
+                            </div><!-- End .entry-meta -->
+
+                            <h3 class="entry-title">
+                                <a href="/tin-tuc-chi-tiet/@item.ID">@item.Name</a>
+                            </h3><!-- End .entry-title -->
+
+                            <div class="entry-content">
+                                <p>@item.Description</p>
+                                <a href="/tin-tuc-chi-tiet/@item.ID" class="read-more">Read More</a>
+                            </div><!-- End .entry-content -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
+                }
+            }
+        </div><!-- End .owl-carousel -->
+    </div><!-- container -->
+
+    <div class="more-container text-center mb-0 mt-3">
+        <a href="/tin-tuc" class="btn btn-outline-darker btn-more"><span>Xem nhiều hơn</span><i class="icon-long-arrow-right"></i></a>
+    </div><!-- End .more-container -->
+</div>
+<div class="cta cta-display bg-image pt-4 pb-4" style="background-image: url(/assets/client/images/backgrounds/cta/bg-6.jpg);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-9 col-xl-8">
+                <div class="row no-gutters flex-column flex-sm-row align-items-sm-center">
+                    <div class="col">
+                        <h3 class="cta-title text-white">Sign Up để giảm 10% giá</h3><!-- End .cta-title -->
+                        <p class="cta-desc text-white">Hãy đăng ký để nhập voucher</p><!-- End .cta-desc -->
+                    </div><!-- End .col -->
+
+                    <div class="col-auto">
+                        <a href="/dang-ky" class="btn btn-outline-white"><span>SIGN UP</span><i class="icon-long-arrow-right"></i></a>
+                    </div><!-- End .col-auto -->
+                </div><!-- End .row no-gutters -->
+            </div><!-- End .col-md-10 col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .cta -->
+@section scripts{
+    <script src="~/Scripts/WishList.js"></script>
+}

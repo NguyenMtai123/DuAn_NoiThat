@@ -1,0 +1,97 @@
+﻿@model List<WebNoiThat_64132077.Models.EF.Post>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">Tin tức</h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+    <div class="container">
+        <nav class="blog-nav">
+            <ul class="menu-cat entry-filter justify-content-center">
+                <li class="active"><a href="#" data-filter="*">Tất cả tin tức</a></li>
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <li><a href="#" data-filter=".@category.SeoTitle">@category.Name</a></li>
+                }
+            </ul><!-- End .blog-menu -->
+        </nav><!-- End .blog-nav -->
+
+        <div class="entry-container max-col-4" data-layout="fitRows">
+            @foreach (var post in Model)
+            {
+                <div class="entry-item @post.PostCategory.SeoTitle">
+                    <article class="entry entry-grid text-center">
+                        <figure class="">
+                            <a href="/tin-tuc-chi-tiet/@post.ID">
+                                <img src="@post.Image" alt="@post.Name" style="height:400px;" width="1400">
+                            </a>
+                        </figure><!-- End .entry-media -->
+
+                        <div class="entry-body">
+                            <div class="entry-meta">
+                                <a href="#">@(post.CreateDate.HasValue ? post.CreateDate.Value.ToString("dd/MM/yyyy") : "")</a>
+                                <span class="meta-separator">|</span>
+                                <a href="#">@post.ViewCount Views</a>
+                            </div><!-- End .entry-meta -->
+
+                            <h2 class="entry-title">
+                                <a href="/tin-tuc-chi-tiet/@post.ID">@post.Name</a>
+                            </h2><!-- End .entry-title -->
+
+                            <div class="entry-cats">
+                                in <a href="#">@post.PostCategory.Name</a>
+                            </div><!-- End .entry-cats -->
+
+                            <div class="entry-content">
+                                <p>@post.Description</p>
+                                <a href="/tin-tuc-chi-tiet/@post.ID" class="read-more">Continue Reading</a>
+                            </div><!-- End .entry-content -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
+                </div><!-- End .entry-item -->
+            }
+        </div><!-- End .entry-container -->
+        <!-- Phân trang -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link page-link-prev" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })" aria-label="Previous">
+                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                    </a>
+                </li>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                    </li>
+                }
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link page-link-next" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })" aria-label="Next">
+                        Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </nav><!-- End .pagination -->
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
+
+
+@section scripts{
+    <script src="/assets/client/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/client/js/isotope.pkgd.min.js"></script>
+}

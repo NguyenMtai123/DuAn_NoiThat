@@ -1,0 +1,78 @@
+﻿@model WebNoiThat_64132077.Models.EF.Contact
+@{
+    ViewBag.Title = "Liên hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header text-center">
+    <div class="container">
+        <h1 class="page-title">Liên hệ</h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-12">
+                <h3>Thông tin liên hệ</h3>
+                @Html.Raw(Model.Detail)
+            </div>
+            <div class="col-xl-6">
+                @Html.Raw(Model.Map)
+            </div>
+
+        </div>
+        <hr class="mt-3 mb-5 mt-md-1">
+        <div class="touch-container row justify-content-center">
+            <div class="col-md-9 col-lg-7">
+                <div class="text-center">
+                    <h2 class="title mb-1">Gửi yêu cầu</h2><!-- End .title mb-2 -->
+                </div><!-- End .text-center -->
+
+                <form class="contact-form mb-2">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="cname" class="sr-only">Name</label>
+                            <input type="text" class="form-control" id="cname" placeholder="Name *" required>
+                        </div><!-- End .col-sm-4 -->
+
+                        <div class="col-sm-4">
+                            <label for="cemail" class="sr-only">Email</label>
+                            <input type="email" class="form-control" id="cemail" placeholder="Email *" required>
+                        </div><!-- End .col-sm-4 -->
+
+                        <div class="col-sm-4">
+                            <label for="cphone" class="sr-only">Phone</label>
+                            <input type="tel" class="form-control" id="cphone" placeholder="Phone">
+                        </div><!-- End .col-sm-4 -->
+                    </div><!-- End .row -->
+
+                    <label for="caddress" class="sr-only">Địa chỉ</label>
+                    <input type="text" class="form-control" id="caddress" placeholder="Adrress">
+
+                    <label for="cmessage" class="sr-only">Message</label>
+                    <textarea class="form-control" cols="30" rows="4" id="cmessage" required placeholder="Message *"></textarea>
+
+                    <div class="text-center">
+                        <button id="btnSend" type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
+                            <span>SUBMIT</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </button>
+                    </div><!-- End .text-center -->
+                </form><!-- End .contact-form -->
+            </div><!-- End .col-md-9 col-lg-7 -->
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
+
+@section scripts{
+    <script src="~/Assets/client/js/client/contact.js"></script>
+}

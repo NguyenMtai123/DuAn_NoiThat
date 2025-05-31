@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .order-success {
+            padding: 50px 0;
+        }
+
+        .order-actions {
+            margin-top: 30px;
+        }
+
+            .order-actions .btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                margin: 10px;
+            }
+
+            .order-actions .btn-outline-primary-2 {
+                color: #007bff;
+                border-color: #007bff;
+            }
+
+                .order-actions .btn-outline-primary-2:hover {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+            .order-actions .btn-outline-success-2 {
+                color: #28a745;
+                border-color: #28a745;
+            }
+
+                .order-actions .btn-outline-success-2:hover {
+                    background-color: #28a745;
+                    color: white;
+                }
+    </style>
+}
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+        <h1 class="page-title">Shopping Cart <span>Shop</span></h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/san-pham">Sản phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+    <div class="order-success text-center">
+        <h3>Đặt hàng thành công!</h3>
+        <p>Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi. Đơn hàng của bạn đang được xử lý.</p>
+
+        <!-- Các nút để tiếp tục mua sắm hoặc xem đơn hàng -->
+        <div class="order-actions">
+            <a href="/san-pham" class="btn btn-outline-primary-2">Tiếp tục mua sắm</a>
+            <a href="/tai-khoan" class="btn btn-outline-success-2">Xem đơn hàng</a>
+        </div>
+    </div><!-- End .order-success -->
+</div><!-- End .page-content -->

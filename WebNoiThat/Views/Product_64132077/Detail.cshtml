@@ -1,0 +1,321 @@
+﻿@model WebNoiThat_64132077.Models.EF.Product
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Lienquan = (List<WebNoiThat_64132077.Models.EF.Product>)ViewBag.LienQuan;
+}
+
+@if (Model != null)
+{
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/danh-muc-san-pham/@Model.ProductCategory.SeoTitle-@Model.ProductCategory.ID">@Model.ProductCategory.Name</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="container">
+            <div class="product-details-top mb-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="product-gallery product-gallery-vertical">
+                            <div class="row">
+                                @if (Model.ProductImages != null && Model.ProductImages.Any())
+                                {
+                                    <figure class="product-main-image">
+                                        <img id="product-zoom" src="@Model.ProductImages.FirstOrDefault(x=>x.IsDefault).Path" alt="product image">
+
+                                        <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                            <i class="icon-arrows"></i>
+                                        </a>
+                                    </figure><!-- End .product-main-image -->
+
+                                    <div id="product-zoom-gallery" class="product-image-gallery">
+                                        @foreach (var item in Model.ProductImages)
+                                        {
+                                            if (item.IsDefault)
+                                            {
+                                                <a class="product-gallery-item active" href="#" data-image="@item.Path">
+                                                    <img src="@item.Path" alt="product side">
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="product-gallery-item" href="#" data-image="@item.Path">
+                                                    <img src="@item.Path" alt="product cross">
+                                                </a>
+                                            }
+                                        }
+                                    </div><!-- End .product-image-gallery -->
+                                }
+
+                            </div><!-- End .row -->
+                        </div><!-- End .product-gallery -->
+                    </div><!-- End .col-md-6 -->
+
+                    <div class="col-md-6">
+                        <div class="product-details product-details-centered">
+                            <h1 class="product-title">@Model.Name</h1><!-- End .product-title -->
+                            <div class="ratings-container">
+                                <div class="ratings">
+                                    <div class="ratings-val" style="width: @(ViewBag.AverageRating * 20)%"></div><!-- End .ratings-val -->
+                                </div><!-- End .ratings -->
+                                <span class="ratings-text">(@ViewBag.ReviewCount Reviews)</span>
+                            </div>
+
+                            <div class="product-price">
+                                @if (Model.IsSale && Model.PromotionPrice > 0)
+                                {
+                                    <span class="new-price">@Model.PromotionPrice đ</span>
+                                    <span class="old-price" style="text-decoration: line-through;">@Model.Price đ</span>
+                                }
+                                else
+                                {
+                                    <span>@Model.Price đ</span>
+                                }
+                            </div><!-- End .product-price -->
+
+                            <div class="product-content">
+                                <p>@Model.Description</p>
+                            </div><!-- End .product-content -->
+
+                            <div class="product-details-action">
+                                <div class="details-action-col">
+                                    <div class="product-details-quantity">
+                                        <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                    </div><!-- End .product-details-quantity -->
+                                    @if (Model.Quantity > 0)
+                                    {
+                                        <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@Model.ID"><span>add to cart</span></a>
+                                    }
+                                    else
+                                    {
+                                        <span class="btn btn-outline-danger">Hết hàng</span>
+                                    }
+                                </div><!-- End .details-action-col -->
+
+                                <div class="details-row-size">
+                                    <a href="#" class="btn-product btn-wishlist p-3" onclick="addToWishlist(@Model.ID)" title="Wishlist"><span>Add to Wishlist</span></a>
+                                </div><!-- End .details-action-wrapper -->
+                            </div><!-- End .product-details-action -->
+
+                            <p>Lượt xem: @Model.ViewCount</p>
+                        </div><!-- End .product-details -->
+                    </div><!-- End .col-md-6 -->
+                </div><!-- End .row -->
+            </div><!-- End .product-details-top -->
+
+            <div class="product-details-tab">
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                        <div class="product-desc-content">
+                            <h3>Product Information</h3>
+                            @Html.Raw(Model.Detail)
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+
+                    <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="reviews">
+                                    <h3>Customer Reviews</h3>
+                                    @if (ViewBag.Reviews != null && ((List<WebNoiThat_64132077.Models.EF.Review>)ViewBag.Reviews).Any())
+                                    {
+                                        foreach (var review in (List<WebNoiThat_64132077.Models.EF.Review>)ViewBag.Reviews)
+                                        {
+                                            <div class="review">
+                                                <h4>@review.Username</h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: @(review.Rate * 20)%"></div>
+                                                    </div>
+                                                </div>
+                                                <p>@review.Detail</p>
+                                                <span class="review-date">@(review.CreateDate.HasValue ? review.CreateDate.Value.ToString("dd/MM/yyyy"):"")</span>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No reviews yet. Be the first to review this product!</p>
+                                    }
+                                </div>
+
+                            </div>
+                            <div class="col-1"> </div>
+                            <div class="col-md-6">
+                                <!-- Form Add Review -->
+                                <div class="reviews">
+                                    <h3>Add a Review</h3>
+                                    <form action="@Url.Action("SubmitReview", "Product_64132077")" method="post">
+                                        <input type="hidden" name="productId" value="@Model.ID" />
+                                        <div class="form-group">
+                                            <label for="name">Your Name:</label>
+                                            <input type="text" class="form-control" name="name" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Your Email:</label>
+                                            <input type="email" class="form-control" name="email" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Your Rating:</label>
+                                            <div>
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <input type="radio" id="star-@i" name="rating" value="@i" required />
+                                                    <label for="star-@i">★</label>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reviewContent">Your Review:</label>
+                                            <textarea class="form-control" name="reviewContent" rows="4" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-details-tab -->
+
+            <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                 data-owl-options='{
+                "nav": false,
+                "dots": true,
+                "margin": 20,
+                "loop": false,
+                "responsive": {
+                    "0": {
+                        "items":1
+                    },
+                    "480": {
+                        "items":2
+                    },
+                    "768": {
+                        "items":3
+                    },
+                    "992": {
+                        "items":4
+                    },
+                    "1200": {
+                        "items":4,
+                        "nav": true,
+                        "dots": false
+                    }
+                }
+            }'>
+                @if (Lienquan != null)
+                {
+                    foreach (var item in Lienquan)
+                    {
+                        var strImge = "";
+                        var img = item.ProductImages.FirstOrDefault(x => x.IsDefault);
+                        if (img != null)
+                        {
+                            strImge = img.Path;
+                        }
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                @if (item.IsSale && item.PromotionPrice > 0)
+                                {
+                                    <span class="product-label label-sale">Sale</span>
+                                }
+
+                                @if (item.CreateDate.HasValue && (DateTime.Now - item.CreateDate.Value).TotalDays <= 7)
+                                {
+                                    <span class="product-label label-new">New</span>
+                                }
+
+                                @if (item.Hot != null && item.Hot > DateTime.Now)
+                                {
+                                    <span class="product-label label-top">Hot</span>
+                                }
+                                <a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">
+                                    <img src="@strImge" alt="@item.Name" class="product-image" style="height:220px">
+                                </a>
+
+                                <div class="product-action-vertical">
+                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable"
+                                       onclick="addToWishlist(@item.ID)">
+                                        <span>add to wishlist</span>
+                                    </a>
+                                </div><!-- End .product-action-vertical -->
+
+                                <div class="product-action">
+                                    @if (item.Quantity > 0)
+                                    {
+                                        <a href="#" class="btn-product btn-cart btnAddtoCart" data-id="@item.ID"><span>add to cart</span></a>
+                                    }
+                                    else
+                                    {
+                                        <span class="btn btn-outline-danger">Hết hàng</span>
+                                    }
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <a href="/danh-muc-san-phan/@item.ProductCategory.SeoTitle-@item.ProductCategory.ID">@item.ProductCategory.Name</a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a href="/chi-tiet/@item.SeoTitle-p@(item.ID)">@item.Name</a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                    @if (item.IsSale && item.PromotionPrice > 0)
+                                    {
+                                        <span class="new-price">@item.PromotionPrice đ</span>
+                                        <span class="old-price" style="text-decoration: line-through;">@item.Price đ</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.Price đ</span>
+                                    }
+                                </div><!-- End .product-price -->
+                                <div class="ratings-container">
+                                    @if (ViewBag.ProductRatings.ContainsKey(item.ID))
+                                    {
+                                        var rating = ViewBag.ProductRatings[item.ID];
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: @(rating.Item1 * 20)%"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <span class="ratings-text">(@rating.Item2 Reviews)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ratings-text">(No Reviews)</span>
+                                    }
+                                </div><!-- End .rating-container -->
+                                <!-- End .product-nav -->
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    }
+
+                }
+
+            </div><!-- End .owl-carousel -->
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+}
+
+@section scripts{
+    <script src="/assets/client/js/jquery.elevateZoom.min.js"></script>
+    <script src="~/Scripts/WishList.js"></script>
+
+}

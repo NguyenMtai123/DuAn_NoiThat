@@ -1,0 +1,133 @@
+﻿@model WebNoiThat_64132077.Models.StatisticsViewModel
+@{
+    Layout = null;
+    int stt = 1;
+    var totalIncome = Model.Statistics.Sum(s => s.TotalIncome);
+    var totalOrders = Model.Statistics.Sum(s => s.OrderCount);
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Báo Cáo Doanh Thu</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .header {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .contact-info {
+            float: left;
+            width: 50%;
+            font-size: 14px;
+        }
+
+        .date-print {
+            float: right;
+            width: 50%;
+            text-align: right;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .total-row td {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="clearfix">
+        <div class="contact-info">
+            <p><strong>Cửa hàng : Nội Thất Khương Duy</strong></p>
+            <p>Đ/C: 998 Lê Hồng Phong, <br />Phường Phước Long, Tp. Nha Trang, <br />Khánh Hòa</p>
+            <p>SĐT: 0977.555.665 - 0968.982.793</p>
+        </div>
+        <div class="date-print">
+            <p><strong>BÁO CÁO DOANH THU</strong></p>
+            <p>Ngày @DateTime.Now.ToString("dd/MM/yyyy")</p>
+        </div>
+    </div>
+
+    <br /><br />
+
+    <p><strong>Thời gian thống kê:</strong> từ @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("yyyy-MM-dd") : "") đến @(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : "")</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Số TT</th>
+                <th>Thời gian</th>
+                <th>Số đơn hàng</th>
+                <th>Thành tiền</th>
+                <th>Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Statistics)
+            {
+                <tr>
+                    <td>@(stt++)</td>
+                    <td>@item.TimeRange</td>
+                    <td>@item.OrderCount</td>
+                    <td>@item.TotalIncome.ToString("N0")</td>
+                    <td>Thu nhập</td>
+                </tr>
+            }
+            @for (int i = stt; i <= 5; i++)  // Tạo hàng trống nếu ít hơn 5 dòng
+            {
+                <tr>
+                    <td>@i</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            <tr class="total-row">
+                <td colspan="2">x</td>
+                <td>@totalOrders</td>
+                <td>@totalIncome.ToString("N0")</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Tổng tiền:</strong> @totalIncome.ToString("N0") VNĐ</p>
+
+    <script>
+        window.onload = function () {
+            window.print();
+        };
+    </script>
+</body>
+</html>

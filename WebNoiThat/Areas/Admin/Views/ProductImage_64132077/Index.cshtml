@@ -1,0 +1,231 @@
+﻿@model IEnumerable<WebNoiThat_64132077.Models.EF.ProductImage>
+@{
+    ViewBag.Title = "Ảnh sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@section Styles{
+    <style>
+        .glImage {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Tạo 4 cột */
+            gap: 15px; /* Khoảng cách giữa các ảnh */
+        }
+
+            .glImage li {
+                position: relative;
+                width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của cột */
+                height: auto; /* Cho phép chiều cao tự động */
+                text-align: center;
+            }
+
+            .glImage img {
+                width: 100%; /* Đảm bảo ảnh lấp đầy cột */
+                height: 150px; /* Chiều cao cố định cho ảnh */
+                object-fit: cover; /* Đảm bảo ảnh không bị méo hoặc co lại */
+            }
+
+        .box-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+    </style>
+}
+
+<section class="section">
+    <div class="section-body">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Ảnh sản phẩm</h3>
+                <div class="card-header-form d-flex justify-content-end w-100">
+                    <!-- Các button sẽ được căn chỉnh sang phải -->
+                    <button type="button" class="btn btn-danger btnDeleteAll mr-2" title="Xóa hết">
+                        Xóa hết
+                    </button>
+                    <input type="button" value="Tải ảnh" class="btn btn-success" onclick="BrowseServer('txtImage');" />
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model != null && Model.Any())
+                {
+                    <ul class="glImage">
+                        @foreach (var item in Model)
+                        {
+                            <li id="trow_@item.ID" class="mr-4">
+                                <small class="d-block text-center mt-2">@item.Name</small>
+                                <img src="@item.Path" width="150" style="height:150px" />
+                                <div class="box-btn">
+                                    <a href="#" data-id="@item.ID" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
+                                    @if (item.IsDefault)
+                                    {
+                                        <a href="#" data-id="@item.ID" class="btn btn-sm btn-success btnDefault"><i class="fa fa-check"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" data-id="@item.ID" class="btn btn-sm btn-warning btnDefault">X</a>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-center">
+                        <p class="text-muted">Chưa có ảnh nào</p>
+                    </div>
+                }
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+
+            </div>
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section script{
+    <script>
+    function BrowseServer(field) {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            debugger;
+            AddImage(@ViewBag.productId, fileUrl);
+        };
+        finder.popup();
+    }
+    function AddImage(id, url) {
+        debugger;
+        $.ajax({
+            url: '/admin/ProductImage_64132077/AddImage',
+            type: 'POST',
+            data: { productId: id, url: url },
+            success: function (rs) {
+                if (rs.Success) {
+                    window.location.reload();
+                }
+            }
+        });
+    }
+        $(document).ready(function () {
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data('id');
+
+                // Sử dụng SweetAlert để xác nhận
+                Swal.fire({
+                    title: 'Bạn có chắc chắn?',
+                    text: "Bạn muốn xóa ảnh này không?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Nếu xác nhận, gọi Ajax để xóa
+                        $.ajax({
+                            url: '/admin/ProductImage_64132077/delete',
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    $('#trow_' + id).remove();
+                                    Swal.fire(
+                                        'Đã xóa!',
+                                        'Ảnh đã được xóa thành công.',
+                                        'success'
+                                    );
+                                } else {
+                                    Swal.fire(
+                                        'Lỗi!',
+                                        'Có lỗi xảy ra khi xóa ảnh.',
+                                        'error'
+                                    );
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+        $('body').on('click', '.btnDefault', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var imageId = btn.data("id");
+
+            $.ajax({
+                url: '/admin/Productimage_64132077/SetDefaultImage',
+                type: 'POST',
+                data: { id: imageId },
+                success: function (rs) {
+                    if (rs.success) {
+                        // Reload page or update UI to reflect the default image.
+                        window.location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi cập nhật ảnh mặc định!');
+                    }
+                }
+            });
+        });
+
+    $('body').on('click', '.btnDeleteAll', function () {
+        var productId = @ViewBag.ProductId; // Lấy ProductId từ ViewBag
+
+        // Sử dụng SweetAlert để xác nhận
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Tất cả ảnh của sản phẩm sẽ bị xóa!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Xóa hết',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu xác nhận, gọi Ajax để xóa tất cả ảnh
+                $.ajax({
+                    url: '/admin/Productimage_64132077/DeleteAll',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (rs) {
+                        if (rs.success) {
+                            $('.glImage').empty();
+                            Swal.fire(
+                                'Đã xóa!',
+                                'Tất cả ảnh đã được xóa thành công.',
+                                'success'
+                            );
+                        } else {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Có lỗi xảy ra khi xóa ảnh.',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            }
+        });
+    });
+});
+
+
+    </script>
+}
