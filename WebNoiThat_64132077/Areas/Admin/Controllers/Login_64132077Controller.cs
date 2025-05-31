@@ -222,52 +222,6 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
             }
             return View(model);
         }
-        [HttpGet]
-        public ActionResult ResetPassword(string token)
-        {
-            var resetToken = db.PasswordResetTokens.FirstOrDefault(t => t.Token == token && t.ExpiryDate > DateTime.Now);
-            if (resetToken == null)
-            {
-                return HttpNotFound("Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.");
-            }
-            var model = new ResetPasswordModel { Token = token };
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var resetToken = db.PasswordResetTokens.FirstOrDefault(t => t.Token == model.Token && t.ExpiryDate > DateTime.Now);
-                if (resetToken == null)
-                {
-                    ModelState.AddModelError("", "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.");
-                    return View(model);
-                }
-
-                var user = db.Users.Find(resetToken.UserID);
-                if (user == null)
-                {
-                    ModelState.AddModelError("", "Người dùng không tồn tại.");
-                    return View(model);
-                }
-
-                // Cập nhật mật khẩu mới (băm lại)
-                user.Password = Encrytor.GetHash(model.NewPassword);
-                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
-
-                // Xóa token đã dùng
-                db.PasswordResetTokens.Remove(resetToken);
-
-                db.SaveChanges();
-
-                ViewBag.Message = "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập với mật khẩu mới.";
-                return View("ResetPasswordSuccess");
-            }
-            return View(model);
-        }
 
 
     }
