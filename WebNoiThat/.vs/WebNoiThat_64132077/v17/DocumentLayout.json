@@ -1,33 +1,65 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\NoiThat\\WebNoiThat_64132077\\",
+  "WorkspaceRootPath": "D:\\NoiThat\\WebNoiThat\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat_64132077\\models\\ef\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:models\\ef\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\views\\product_64132077\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\views\\product_64132077\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat_64132077\\areas\\admin\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\models\\ef\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:models\\ef\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat_64132077\\models\\dao\\userdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat\\models\\dao\\userdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:models\\dao\\userdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat_64132077\\areas\\admin\\views\\login_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\views\\order_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\views\\order_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\controllers\\order_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\controllers\\order_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\views\\order_64132077\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\views\\order_64132077\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\views\\statistic_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\views\\statistic_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\controllers\\statistic_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\controllers\\statistic_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat\\areas\\admin\\views\\login_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\views\\login_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat_64132077\\areas\\admin\\controllers\\login_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\views\\product_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\views\\product_64132077\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat\\areas\\admin\\controllers\\product_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\controllers\\product_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat\\areas\\admin\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat\\areas\\admin\\controllers\\login_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\controllers\\login_64132077controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|d:\\noithat\\webnoithat_64132077\\models\\ef\\usergroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat\\models\\ef\\usergroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:models\\ef\\usergroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat_64132077\\areas\\admin\\models\\forgotpasswordmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|D:\\NoiThat\\WebNoiThat\\areas\\admin\\models\\forgotpasswordmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EA4D7E88-C65F-4744-AAD6-02AA2972C1A8}|WebNoiThat_64132077.csproj|solutionrelative:areas\\admin\\models\\forgotpasswordmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -38,7 +70,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,94 +78,194 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserDao.cs",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Models\\Dao\\UserDao.cs",
-              "RelativeDocumentMoniker": "Models\\Dao\\UserDao.cs",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Models\\Dao\\UserDao.cs",
-              "RelativeToolTip": "Models\\Dao\\UserDao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAAAgAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Product.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Models\\EF\\Product.cs",
+              "RelativeDocumentMoniker": "Models\\EF\\Product.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Models\\EF\\Product.cs",
+              "RelativeToolTip": "Models\\EF\\Product.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAwwB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T03:35:26.798Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UserGroup.cs",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Models\\EF\\UserGroup.cs",
-              "RelativeDocumentMoniker": "Models\\EF\\UserGroup.cs",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Models\\EF\\UserGroup.cs",
-              "RelativeToolTip": "Models\\EF\\UserGroup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T02:58:04.332Z",
+              "WhenOpened": "2025-05-31T14:00:45.859Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "User.cs",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Models\\EF\\User.cs",
-              "RelativeDocumentMoniker": "Models\\EF\\User.cs",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Models\\EF\\User.cs",
-              "RelativeToolTip": "Models\\EF\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Product_64132077\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Product_64132077\\Create.cshtml",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Product_64132077\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Product_64132077\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKAAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T13:58:40.896Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Order_64132077Controller.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Order_64132077Controller.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\Order_64132077Controller.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Order_64132077Controller.cs",
+              "RelativeToolTip": "Areas\\Admin\\Controllers\\Order_64132077Controller.cs",
+              "ViewState": "AgIAAEABAAAAAAAAAAAgwGMBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T02:57:08.74Z",
+              "WhenOpened": "2025-05-31T13:52:10.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Order_64132077\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Order_64132077\\Create.cshtml",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Order_64132077\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Order_64132077\\Create.cshtml",
+              "ViewState": "AgIAAMAAAAAAAAAAAAAAADkBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T13:51:28.826Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Views\\Login_64132077\\Index.cshtml",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Order_64132077\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Order_64132077\\Index.cshtml",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Order_64132077\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Order_64132077\\Index.cshtml",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAkwDQAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T13:50:58.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Statistic_64132077Controller.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Statistic_64132077Controller.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\Statistic_64132077Controller.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Statistic_64132077Controller.cs",
+              "RelativeToolTip": "Areas\\Admin\\Controllers\\Statistic_64132077Controller.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAgwF8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T12:47:04.067Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Statistic_64132077\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Statistic_64132077\\Index.cshtml",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Statistic_64132077\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Statistic_64132077\\Index.cshtml",
+              "ViewState": "AgIAAJEAAAAAAAAAAAAkwMsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T12:46:52.204Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Product_64132077\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Product_64132077\\Index.cshtml",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Product_64132077\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Product_64132077\\Index.cshtml",
+              "ViewState": "AgIAAIgBAAAAAAAAAAAAAJYBAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T12:00:55.123Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserDao.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Models\\Dao\\UserDao.cs",
+              "RelativeDocumentMoniker": "Models\\Dao\\UserDao.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Models\\Dao\\UserDao.cs",
+              "RelativeToolTip": "Models\\Dao\\UserDao.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAiwCEAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T03:35:26.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Product_64132077Controller.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Product_64132077Controller.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\Product_64132077Controller.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Product_64132077Controller.cs",
+              "RelativeToolTip": "Areas\\Admin\\Controllers\\Product_64132077Controller.cs",
+              "ViewState": "AgIAAEEBAAAAAAAAAAAIwGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T11:47:34.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "UserGroup.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Models\\EF\\UserGroup.cs",
+              "RelativeDocumentMoniker": "Models\\EF\\UserGroup.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Models\\EF\\UserGroup.cs",
+              "RelativeToolTip": "Models\\EF\\UserGroup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T02:58:04.332Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Login_64132077\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Login_64132077\\Index.cshtml",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Views\\Login_64132077\\Index.cshtml",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Views\\Login_64132077\\Index.cshtml",
               "RelativeToolTip": "Areas\\Admin\\Views\\Login_64132077\\Index.cshtml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAEoAAABvAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAAGAAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-05-31T02:50:00.786Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 11,
               "Title": "LoginModel.cs",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Models\\LoginModel.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Models\\LoginModel.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\LoginModel.cs",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Models\\LoginModel.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Models\\LoginModel.cs",
               "RelativeToolTip": "Areas\\Admin\\Models\\LoginModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T02:42:06.391Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T02:42:06.391Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 14,
               "Title": "ForgotPasswordModel.cs",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Models\\ForgotPasswordModel.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Models\\ForgotPasswordModel.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Models\\ForgotPasswordModel.cs",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Models\\ForgotPasswordModel.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Models\\ForgotPasswordModel.cs",
               "RelativeToolTip": "Areas\\Admin\\Models\\ForgotPasswordModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T02:42:00.325Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T02:42:00.325Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 12,
               "Title": "Login_64132077Controller.cs",
-              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Controllers\\Login_64132077Controller.cs",
+              "DocumentMoniker": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Login_64132077Controller.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\Login_64132077Controller.cs",
-              "ToolTip": "D:\\NoiThat\\WebNoiThat_64132077\\Areas\\Admin\\Controllers\\Login_64132077Controller.cs",
+              "ToolTip": "D:\\NoiThat\\WebNoiThat\\Areas\\Admin\\Controllers\\Login_64132077Controller.cs",
               "RelativeToolTip": "Areas\\Admin\\Controllers\\Login_64132077Controller.cs",
               "ViewState": "AgIAACIAAAAAAAAAAAAswCsAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T02:40:26.857Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T02:40:26.857Z"
             }
           ]
         },

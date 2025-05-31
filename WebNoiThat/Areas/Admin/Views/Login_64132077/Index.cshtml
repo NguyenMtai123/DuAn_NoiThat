@@ -51,10 +51,7 @@
                                         <h5 class="card-title text-center pb-0 fs-4">Đăng nhập</h5>
                                         <p class="text-center small">Nhập tài khoản và mật khẩu để đăng nhập</p>
                                     </div>
-                                    if (!ViewData.ModelState.IsValid)
-                                    {
-                                        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
-                                    } <div class="form-group">
+                                    <div class="form-group">
                                         <label for="email">Tài khoản</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupPrepend">@@</span>
@@ -91,9 +88,13 @@
                                             Login
                                         </button>
                                     </div>
-                                    <div class="mt-1 text-muted text-center">
+                                    <div class="mt-1 text-muted text-center mb-2">
                                         Bạn chưa có tài khoản? <a href="/Admin/Login_64132077/Register">Đăng ký ngay</a>
                                     </div>
+                                    if (!ViewData.ModelState.IsValid)
+                                    {
+                                        @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+                                    }
                                 }
 
                             </div>

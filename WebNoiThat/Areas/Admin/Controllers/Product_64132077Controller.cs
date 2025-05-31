@@ -42,53 +42,93 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
             return "SP" + nextId.ToString("D3");
         }
 
-        public ActionResult Index(string searchCode, string searchName, int? searchCategoryId, string isSale, decimal? minPrice, decimal? maxPrice,
-            string sortBy, string sortOrder, int page = 1, int pageSize = 10)
+        public ActionResult Index(string searchCode, string searchName, int? searchCategoryId, string isSale,
+    string minPrice, string maxPrice, string sortBy, string sortOrder, int page = 1, int pageSize = 10)
         {
             var products = db.Products.AsQueryable();
 
+            // Dữ liệu combobox danh mục
+            ViewBag.CategoryList = new SelectList(db.ProductCategories.ToList(), "ID", "Name", searchCategoryId);
+
+            // Lưu giá trị tìm kiếm lại cho View
+            ViewBag.SearchCode = searchCode;
+            ViewBag.SearchName = searchName;
+            ViewBag.IsSale = isSale;
+            ViewBag.MinPrice = minPrice;
+            ViewBag.MaxPrice = maxPrice;
+
+            // Parse giá trị min/max
+            decimal parsedMin, parsedMax;
+            decimal? min = null, max = null;
+
+            if (!string.IsNullOrEmpty(minPrice))
+            {
+                if (!decimal.TryParse(minPrice, out parsedMin))
+                {
+                    ViewBag.Message = "Giá thấp nhất không hợp lệ. Vui lòng nhập số.";
+
+                    // Load lại toàn bộ sản phẩm không lọc
+                    var allProducts = db.Products.Include("ProductCategory").Include("ProductImages").OrderBy(p => p.ID).ToPagedList(page, pageSize);
+                    return View(allProducts);
+                }
+                min = parsedMin;
+            }
+
+
+            if (!string.IsNullOrEmpty(maxPrice))
+            {
+                if (!decimal.TryParse(maxPrice, out parsedMax))
+                {
+                    ViewBag.Message = "Giá cao nhất không hợp lệ. Vui lòng nhập số.";
+
+                    var allProducts = db.Products.Include("ProductCategory").Include("ProductImages").OrderBy(p => p.ID).ToPagedList(page, pageSize);
+                    return View(allProducts);
+                }
+                max = parsedMax;
+            }
+
+            if (min.HasValue && max.HasValue && min > max)
+            {
+                ViewBag.Message = "Giá thấp nhất không được lớn hơn giá cao nhất.";
+
+                var allProducts = db.Products.Include("ProductCategory").Include("ProductImages").OrderBy(p => p.ID).ToPagedList(page, pageSize);
+                return View(allProducts);
+            }
+
             // Lọc theo mã sản phẩm
             if (!string.IsNullOrEmpty(searchCode))
-            {
                 products = products.Where(p => p.Code.Contains(searchCode));
-                ViewBag.SearchCode = searchCode;
-            }
 
             // Lọc theo tên sản phẩm
             if (!string.IsNullOrEmpty(searchName))
-            {
                 products = products.Where(p => p.Name.Contains(searchName));
-                ViewBag.SearchName = searchName;
-            }
 
             // Lọc theo danh mục
             if (searchCategoryId.HasValue && searchCategoryId.Value > 0)
-            {
-                products = products.Where(p => p.CategoryID == searchCategoryId);
-            }
+                products = products.Where(p => p.CategoryID == searchCategoryId.Value);
 
             // Lọc theo trạng thái giảm giá
             if (!string.IsNullOrEmpty(isSale))
             {
-                bool isSaleBool = isSale == "true";
-                products = products.Where(p => p.IsSale == isSaleBool);
+                if (isSale == "true" || isSale == "false")
+                {
+                    bool isSaleBool = isSale == "true";
+                    products = products.Where(p => p.IsSale == isSaleBool);
+                }
+                else
+                {
+                    ViewBag.Message = "Giá trị giảm giá không hợp lệ.";
+                    return View(new List<Product>().ToPagedList(1, pageSize));
+                }
             }
-            ViewBag.IsSale = isSale;
 
             // Lọc theo khoảng giá
-            if (minPrice.HasValue)
-            {
-                products = products.Where(p => p.Price >= minPrice.Value);
-                ViewBag.MinPrice = minPrice.ToString();
-            }
+            if (min.HasValue)
+                products = products.Where(p => p.Price >= min.Value);
+            if (max.HasValue)
+                products = products.Where(p => p.Price <= max.Value);
 
-            if (maxPrice.HasValue)
-            {
-                products = products.Where(p => p.Price <= maxPrice.Value);
-                ViewBag.MaxPrice = maxPrice.ToString();
-            }
-
-            // Join để lấy danh mục sản phẩm
+            // Join bảng liên quan
             products = products.Include("ProductCategory").Include("ProductImages");
 
             // Sắp xếp
@@ -122,15 +162,18 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
                     break;
             }
 
-            // Gán danh sách danh mục cho DropDown
-            ViewBag.CategoryList = new SelectList(db.ProductCategories.ToList(), "ID", "Name", searchCategoryId);
+            // Thông báo nếu không có kết quả
+            if (!products.Any())
+            {
+                ViewBag.Message = "Không tìm thấy sản phẩm nào phù hợp với tiêu chí tìm kiếm.";
+            }
 
             var pagedList = products.ToPagedList(page, pageSize);
-
             ViewBag.PageNumber = page;
 
             return View(pagedList);
         }
+
 
         [HttpGet]
         public ActionResult Create()

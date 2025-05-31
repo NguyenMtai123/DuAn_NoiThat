@@ -85,9 +85,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @id = "ProductName" })
                                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -137,31 +137,26 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        <label class="control-label">Số lượng</label>
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", type = "number", min = "0", step = "1", @Value = 1 })
-                                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                            <input type="number" name="Quantity" id="Quantity" class="form-control" value="1" />
+                                            <span class="text-danger validation-error" id="QuantityError"></span>
                                         </div>
                                     </div>
                                 </div>
-                                @*<div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Warranty, htmlAttributes: new { @class = "control-label col-md-8" })
-                                            <div class="col-md-12">
-                                                @Html.TextBoxFor(model => model.Warranty, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.Warranty, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                    </div>*@
+
+                                <!-- Giá -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-8" })
+                                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
                                         <div class="col-md-12">
-                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", min = "0", step = "1000", @Value = 0 })
+                                            @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", @id = "Price", @Value = 0 })
                                             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
+
+
                                 @*<div class="col-md-3">
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.PromotionPrice, htmlAttributes: new { @class = "control-label col-md-12" })
@@ -321,32 +316,32 @@
             var str = "";
             if (currentId == 1) {
                 str += `<tr id="trow_${currentId}" style="margin-bottom: 10px;">
-                                                                                                                    <td class="text-center">${currentId}</td>
-                                                                                                                    <td class="text-center">
-                                                                                                                        <img width="80" style="height:80px; margin: 5px;" src="${url}" />
-                                                                                                                        <input type='hidden' value="${url}" name="Images"/>
-                                                                                                                    </td>
-                                                                                                                    <td class="text-center">
-                                                                                                                        <input type="radio" name="rDefault" value="${currentId}" checked="checked"/>
-                                                                                                                    </td>
-                                                                                                                    <td class="text-center">
-                                                                                                                        <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
-                                                                                                                    </td>
-                                                                                                                </tr>`;
+                                                                                                                                                                                                    <td class="text-center">${currentId}</td>
+                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                        <img width="80" style="height:80px; margin: 5px;" src="${url}" />
+                                                                                                                                                                                                        <input type='hidden' value="${url}" name="Images"/>
+                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                        <input type="radio" name="rDefault" value="${currentId}" checked="checked"/>
+                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                        <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
+                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                </tr>`;
             } else {
                 str += `<tr id="trow_${currentId}" style="margin-bottom: 10px;">
-                                                                                                                    <td class="text-center">${currentId}</td>
-                                                                                                                    <td class="text-center">
-                                                                                                                        <img width="80" style="height:80px; margin: 5px;" src="${url}" />
-                                                                                                                        <input type='hidden' value="${url}" name="Images"/>
-                                                                                                                    </td>
-                                                                                                                    <td class="text-center">
-                                                                                                                        <input type="radio" name="rDefault" value="${currentId}"/>
-                                                                                                                    </td>
-                                                                                                                    <td class="text-center">
-                                                                                                                        <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
-                                                                                                                    </td>
-                                                                                                                </tr>`;
+                                                                                                                                                                                                    <td class="text-center">${currentId}</td>
+                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                        <img width="80" style="height:80px; margin: 5px;" src="${url}" />
+                                                                                                                                                                                                        <input type='hidden' value="${url}" name="Images"/>
+                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                        <input type="radio" name="rDefault" value="${currentId}"/>
+                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                        <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
+                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                </tr>`;
             }
             $('#tbHtml').append(str);
             $('#tCurrentId').val(currentId);
@@ -381,4 +376,60 @@
             }
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const categorySelect = document.querySelector("[name='CategoryID']");
+            const supplierSelect = document.querySelector("[name='SupplierID']");
+            const nameInput = document.getElementById("ProductName");
+            const quantityInput = document.getElementById("Quantity");
+            const priceInput = document.getElementById("Price");
+
+
+            form.addEventListener("submit", function (e) {
+                let valid = true;
+
+                // Xóa thông báo cũ
+                document.querySelectorAll(".validation-error").forEach(el => el.remove());
+
+                if (!categorySelect.value) {
+                    valid = false;
+                    showError(categorySelect, "Vui lòng chọn danh mục.");
+                }
+
+                if (!supplierSelect.value) {
+                    valid = false;
+                    showError(supplierSelect, "Vui lòng chọn nhà cung cấp.");
+                }
+
+                if (!nameInput.value.trim()) {
+                    showError(nameInput, "Vui lòng nhập tên sản phẩm.");
+                    valid = false;
+                }
+
+                if (quantityInput.value === "" || parseInt(quantityInput.value) < 0) {
+                    showError(quantityInput, "Số lượng phải lớn hơn hoặc bằng 0.");
+                    valid = false;
+                }
+
+                if (priceInput.value === "" || parseFloat(priceInput.value) < 0) {
+                    showError(priceInput, "Giá phải lớn hơn hoặc bằng 0.");
+                    valid = false;
+                }
+
+                if (!valid) {
+                    e.preventDefault(); // Ngăn submit nếu có lỗi
+                }
+
+                function showError(element, message) {
+                    const error = document.createElement("span");
+                    error.classList.add("text-danger", "validation-error");
+                    error.textContent = message;
+                    element.parentNode.appendChild(error);
+                }
+            });
+        });
+    </script>
+
 }

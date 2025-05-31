@@ -16,44 +16,82 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
 
         public ActionResult Index(DateTime? startDate, DateTime? endDate)
         {
-            DateTime? start = startDate;
-            DateTime? end = endDate;
+            // Nếu chưa nhấn nút lọc (vừa load trang lần đầu)
+            if (Request.QueryString.Count == 0)
+            {
+                // Lấy toàn bộ đơn hàng (không lọc theo thời gian)
+                var allOrders = db.Orders
+                    .Where(o => o.Status == 3 && o.OrderDate.HasValue)
+                    .ToList();
 
-            var q = db.Orders.Where(o => o.Status == 3);
+                var grouped = allOrders
+                    .GroupBy(o => o.OrderDate.Value.Date)
+                    .Select(g => new StatisticsItem
+                    {
+                        TimeRange = g.Key.ToString("dd/MM/yyyy"),
+                        OrderCount = g.Count(),
+                        TotalIncome = g.Sum(o => o.TotalAmount ?? 0)
+                    })
+                    .OrderBy(x => DateTime.ParseExact(x.TimeRange, "dd/MM/yyyy", null))
+                    .ToList();
 
-            if (start.HasValue)
-                q = q.Where(o => o.OrderDate >= start.Value);
+                var model = new StatisticsViewModel
+                {
+                    Statistics = grouped,
+                    TotalOrders = grouped.Sum(x => x.OrderCount),
+                    TotalIncome = grouped.Sum(x => x.TotalIncome)
+                };
 
-            // Đưa dữ liệu về bộ nhớ và sau đó lọc theo ngày
-            var orders = q.ToList();
+                return View(model);
+            }
 
-            if (end.HasValue)
-                orders = orders.Where(o => o.OrderDate.HasValue && o.OrderDate.Value.Date <= end.Value.Date).ToList();
+            // Nếu đã nhấn lọc nhưng thiếu 1 trong 2 trường
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+                ViewBag.Message = "Vui lòng nhập đầy đủ cả hai trường 'Từ ngày' và 'Đến ngày'.";
+                return View(new StatisticsViewModel
+                {
+                    StartDate = startDate,
+                    EndDate = endDate
+                });
+            }
 
-            var grouped = orders
+            if (startDate > endDate)
+            {
+                ViewBag.Message = "'Từ ngày' phải nhỏ hơn hoặc bằng 'Đến ngày'.";
+                return View(new StatisticsViewModel
+                {
+                    StartDate = startDate,
+                    EndDate = endDate
+                });
+            }
+
+            // Truy vấn khi lọc
+            var orders = db.Orders
+                .Where(o => o.Status == 3 && o.OrderDate >= startDate && o.OrderDate <= endDate)
+                .ToList();
+
+            var groupedFiltered = orders
                 .GroupBy(o => o.OrderDate.Value.Date)
                 .Select(g => new StatisticsItem
                 {
                     TimeRange = g.Key.ToString("dd/MM/yyyy"),
                     OrderCount = g.Count(),
-                    TotalIncome = g.Sum(o => o.TotalAmount.GetValueOrDefault())
+                    TotalIncome = g.Sum(o => o.TotalAmount ?? 0)
                 })
                 .OrderBy(x => DateTime.ParseExact(x.TimeRange, "dd/MM/yyyy", null))
                 .ToList();
 
-            var totalOrders = grouped.Sum(x => x.OrderCount);
-            var totalIncome = grouped.Sum(x => x.TotalIncome);
-
-            var model = new StatisticsViewModel
+            var filteredModel = new StatisticsViewModel
             {
-                StartDate = start,
-                EndDate = end,
-                Statistics = grouped,
-                TotalOrders = totalOrders,
-                TotalIncome = totalIncome
+                StartDate = startDate,
+                EndDate = endDate,
+                Statistics = groupedFiltered,
+                TotalOrders = groupedFiltered.Sum(x => x.OrderCount),
+                TotalIncome = groupedFiltered.Sum(x => x.TotalIncome)
             };
 
-            return View(model);
+            return View(filteredModel);
         }
 
         public ActionResult PrintReport(DateTime? startDate, DateTime? endDate)

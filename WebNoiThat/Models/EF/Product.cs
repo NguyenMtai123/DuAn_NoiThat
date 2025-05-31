@@ -28,7 +28,6 @@
         public string Code { get; set; }
 
         [StringLength(500)]
-        [Required(ErrorMessage = "Vui lòng nhập tên sản phẩm")]
 
         [Display(Name = "Tên sản phẩm")]
 

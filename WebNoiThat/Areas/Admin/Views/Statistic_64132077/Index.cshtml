@@ -20,6 +20,13 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div>
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning" id="messageAlert">
+            @ViewBag.Message
+        </div>
+    }
+
 }
 
 <div class="container mt-5">
@@ -29,12 +36,12 @@
         <div class="col-md-3">
             <label class="form-label">Từ ngày:</label>
             <input type="date" name="startDate" class="form-control"
-                   value="@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))" />
+                   value="@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("yyyy-MM-dd") : "")" />
         </div>
         <div class="col-md-3">
             <label class="form-label">Đến ngày:</label>
             <input type="date" name="endDate" class="form-control"
-                   value="@(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))" />
+                   value="@(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") :"" )" />
         </div>
         <div class="col-md-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary w-100">Lọc</button>
@@ -72,14 +79,24 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Statistics)
+                @if (Model.Statistics != null && Model.Statistics.Any())
+                {
+                    foreach (var item in Model.Statistics)
+                    {
+                        <tr>
+                            <td>@item.TimeRange</td>
+                            <td>@item.OrderCount</td>
+                            <td>@item.TotalIncome.ToString("N0")</td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@item.TimeRange</td>
-                        <td>@item.OrderCount</td>
-                        <td>@item.TotalIncome.ToString("N0")</td>
+                        <td colspan="3" class="text-center text-muted">Không có dữ liệu hiển thị.</td>
                     </tr>
                 }
+
             </tbody>
         </table>
     </div>
@@ -94,9 +111,9 @@
 
 
 <script>
-    const labels = @Html.Raw(Json.Encode(Model.Statistics.Select(s => s.TimeRange)));
-    const orderCounts = @Html.Raw(Json.Encode(Model.Statistics.Select(s => s.OrderCount)));
-    const incomes = @Html.Raw(Json.Encode(Model.Statistics.Select(s => s.TotalIncome)));
+    const labels = @Html.Raw(Json.Encode(Model.Statistics != null ? Model.Statistics.Select(s => s.TimeRange) : new List<string>()));
+    const orderCounts = @Html.Raw(Json.Encode(Model.Statistics != null ? Model.Statistics.Select(s => s.OrderCount) : new List<int>()));
+    const incomes = @Html.Raw(Json.Encode(Model.Statistics != null ? Model.Statistics.Select(s => s.TotalIncome) : new List<decimal>()));
 
     const ctx = document.getElementById('statisticsChart').getContext('2d');
     const chart = new Chart(ctx, {
@@ -172,5 +189,15 @@
         window.print();
         // Khôi phục nội dung body ban đầu
         location.reload();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var alertBox = document.getElementById("messageAlert");
+        if (alertBox) {
+            setTimeout(function () {
+                alertBox.style.display = "none";
+            }, 3000);
+        }
     });
 </script>

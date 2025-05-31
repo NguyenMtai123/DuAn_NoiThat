@@ -48,89 +48,117 @@ namespace WebNoiThat_64132077.Areas.Admin.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            // Tạo mã đơn hàng mới
-            var lastOrder = db.Orders
-                .OrderByDescending(x => x.ID)
-                .FirstOrDefault();
+            // Tạo mã đơn hàng mới an toàn hơn
+            var lastOrder = db.Orders.OrderByDescending(x => x.ID).FirstOrDefault();
 
             string newCode = "DH01";
-            if (lastOrder != null && !string.IsNullOrEmpty(lastOrder.Code))
+            if (lastOrder != null && !string.IsNullOrEmpty(lastOrder.Code) && lastOrder.Code.StartsWith("DH"))
             {
-                string numberPart = lastOrder.Code.Substring(2); // Lấy phần số
-                int number = int.Parse(numberPart);
-                number++;
-                newCode = "DH" + number.ToString("D2"); // Format lại với 2 chữ số
+                string numberPart = lastOrder.Code.Substring(2);
+                if (int.TryParse(numberPart, out int number))
+                {
+                    number++;
+                    newCode = "DH" + number.ToString("D2");
+                }
             }
 
             var newOrder = new Order
             {
                 Code = newCode,
-                OrderDate = DateTime.Now
             };
 
+            // Đổ dữ liệu cho dropdown
             ViewBag.CustomerID = new SelectList(db.Users.Where(x => x.GroupID == "CUSTOMER"), "ID", "Fullname");
             ViewBag.EmployeeName = new SelectList(db.Users.Where(x => x.GroupID == "EMPLOYEE"), "Fullname", "Fullname");
-            ViewBag.Products = db.Products.ToList();
+            ViewBag.Products = db.Products.ToList(); // có thể lọc Quantity > 0 nếu muốn
 
             return View(newOrder);
         }
 
-
+        // POST: Order/Create
         [HttpPost]
         public ActionResult Create(Order order, int[] ProductIDs, int[] Quantities)
         {
-            if (ModelState.IsValid)
+            if (!order.CustomerID.HasValue)
+                ModelState.AddModelError("CustomerID", "Vui lòng chọn khách hàng.");
+
+            if (!order.OrderDate.HasValue)
+                ModelState.AddModelError("OrderDate", "Vui lòng chọn ngày lập hóa đơn.");
+
+            if (!order.DeliveryDate.HasValue)
+                ModelState.AddModelError("DeliveryDate", "Vui lòng chọn ngày giao hàng.");
+            else if (order.OrderDate.HasValue && order.DeliveryDate.Value.Date < order.OrderDate.Value.Date)
+                ModelState.AddModelError("DeliveryDate", "Ngày giao hàng phải bằng hoặc sau ngày lập hóa đơn.");
+
+            if (ProductIDs == null || ProductIDs.Length == 0)
             {
-                order.OrderDate = DateTime.Now;
-                order.DeliveryDate = DateTime.Now;
-                //order.Status = 3;
-
-                // Lấy tên và số điện thoại khách hàng từ bảng User
-                if (order.CustomerID.HasValue)
-                {
-                    var customer = db.Users.Find(order.CustomerID.Value);
-                    if (customer != null)
-                    {
-                        order.CustomerName = customer.Fullname;
-                        // Nếu bạn có thêm CustomerPhone thì thêm:
-                        //order.CustomerPhone = customer.Phone;
-                    }
-                }
-
-                db.Orders.Add(order);
-                db.SaveChanges();
-
-                // Lưu chi tiết đơn hàng
-                if (ProductIDs != null && Quantities != null)
-                {
-                    for (int i = 0; i < ProductIDs.Length; i++)
-                    {
-                        var product = db.Products.Find(ProductIDs[i]);
-                        if (product != null)
-                        {
-                            var detail = new OrderDetail
-                            {
-                                OrderID = order.ID,
-                                ProductID = product.ID,
-                                ProductName = product.Name,
-                                ProductCode = product.Code,
-                                Quantity = Quantities[i],
-                                Price = product.Price,
-                            };
-                            db.OrderDetails.Add(detail);
-                        }
-                    }
-                    db.SaveChanges();
-                }
-
-                return RedirectToAction("Index");
+                ModelState.AddModelError("ProductIDs", "Vui lòng chọn ít nhất một sản phẩm.");
             }
 
-            ViewBag.CustomerID = new SelectList(db.Users.Where(x => x.GroupID == "CUSTOMER"), "ID", "Fullname", order.CustomerID);
-            ViewBag.EmployeeName = new SelectList(db.Users.Where(x => x.GroupID == "EMPLOYEE"), "Fullname", "Fullname", order.EmployeeName);
-            ViewBag.Products = db.Products.ToList();
+            // Kiểm tra: số lượng vượt tồn kho
+            if (ProductIDs != null && Quantities != null)
+            {
+                for (int i = 0; i < ProductIDs.Length; i++)
+                {
+                    var product = db.Products.Find(ProductIDs[i]);
+                    int requested = Quantities[i];
 
-            return View(order);
+                    if (product != null && requested > product.Quantity)
+                    {
+                        ModelState.AddModelError("", $"Số lượng sản phẩm \"{product.Name}\" vượt quá tồn kho hiện tại.");
+                    }
+                }
+            }
+            if (!ModelState.IsValid)
+            {
+                ViewBag.CustomerID = new SelectList(db.Users.Where(x => x.GroupID == "CUSTOMER"), "ID", "Fullname", order.CustomerID);
+                ViewBag.Products = db.Products.ToList();
+                return View(order);
+            }
+            //// Nếu có lỗi, quay lại View
+            //if (!ModelState.IsValid)
+            //{
+            //    ViewBag.CustomerID = new SelectList(db.Users.Where(x => x.GroupID == "CUSTOMER"), "ID", "Fullname", order.CustomerID);
+            //    ViewBag.EmployeeName = new SelectList(db.Users.Where(x => x.GroupID == "EMPLOYEE"), "Fullname", "Fullname", order.EmployeeName);
+            //    ViewBag.Products = db.Products.ToList();
+            //    return View(order);
+            //}
+            order.OrderDate = DateTime.Now;
+            order.TotalAmount = 0;
+
+            if (order.CustomerID.HasValue)
+            {
+                var customer = db.Users.Find(order.CustomerID.Value);
+                if (customer != null)
+                    order.CustomerName = customer.Fullname;
+            }
+
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            for (int i = 0; i < ProductIDs.Length; i++)
+            {
+                var product = db.Products.Find(ProductIDs[i]);
+                if (product != null)
+                {
+                    var detail = new OrderDetail
+                    {
+                        OrderID = order.ID,
+                        ProductID = product.ID,
+                        ProductName = product.Name,
+                        ProductCode = product.Code,
+                        Quantity = Quantities[i],
+                        Price = product.Price
+                    };
+                    db.OrderDetails.Add(detail);
+
+                    order.TotalAmount += Quantities[i] * product.Price;
+                }
+            }
+
+            db.SaveChanges(); // để lưu TotalAmount cập nhật lại
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Print(int id)

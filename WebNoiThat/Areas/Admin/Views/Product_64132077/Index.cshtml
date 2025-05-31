@@ -21,6 +21,12 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div>
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning" id="messageAlert">
+            @ViewBag.Message
+        </div>
+    }
 }
 <style>
     /* Giữ nguyên các style cho th */
@@ -388,4 +394,15 @@
 @section script{
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="~/Assets/admin/js/controller/adminjs/productadmin.js"></script>
+    <script>
+        // Đợi DOM sẵn sàng
+        document.addEventListener("DOMContentLoaded", function () {
+            var alertBox = document.getElementById("messageAlert");
+            if (alertBox) {
+                setTimeout(function () {
+                    alertBox.style.display = "none";
+                }, 3000); // 3000 milliseconds = 3 giây
+            }
+        });
+    </script>
 }

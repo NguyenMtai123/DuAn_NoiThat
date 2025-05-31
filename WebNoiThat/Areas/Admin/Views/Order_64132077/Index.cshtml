@@ -48,8 +48,6 @@
                     </div>
                     <!-- Nút tạo mới -->
 
-
-
                     <div class="card-body p-1">
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -77,7 +75,7 @@
                                             <td>@item.TotalAmount</td>
                                             <td>@(item.TypePayment==1?"Chuyển khoản":"Tiền mặt")</td>
                                             <td>@(item.OrderDate.HasValue ? item.OrderDate.Value.ToString("dd/MM/yyyy") : "")</td>
-                                            <td>@(item.DeliveryDate.HasValue ? item.OrderDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                                            <td>@(item.DeliveryDate.HasValue ? item.DeliveryDate.Value.ToString("dd/MM/yyyy") : "")</td>
                                             <td>
                                                 @if (item.Status == 1)
                                                 {
